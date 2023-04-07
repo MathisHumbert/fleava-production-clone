@@ -11,10 +11,30 @@
 
 body {
   background: var(--bg-color);
+  color: var(--main-color);
+  font-size: 0.75vw;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05vw;
+  line-height: 1.2;
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+}
+
+.line__inner {
+  display: block;
 }
 
 #webgl {
@@ -58,6 +78,7 @@ Slide
   border-right: calc(var(--slide-base) * 1 / 10) solid transparent;
   width: calc(var(--slide-base) * 2);
   height: calc(var(--slide-base) * 0.9);
+  cursor: pointer;
 }
 
 .slide:last-child {
@@ -68,6 +89,77 @@ Slide
   width: 100%;
   height: 100%;
   object-fit: cover;
-  cursor: pointer;
-  /* opacity: 0; */
+  opacity: 0;
+}
+
+/* 
+Header
+*/
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 3vw 5vw 0;
+}
+
+.header__logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5vw;
+  width: 25%;
+}
+
+.header__logo svg {
+  width: auto;
+  height: 1.15vw;
+}
+
+.header__logo svg path {
+  fill: var(--main-color);
+}
+
+.header__logo p {
+  position: relative;
+  font-weight: 300;
+  font-size: 1.5vw;
+  letter-spacing: -0.05vw;
+  text-transform: none;
+  opacity: 0.5;
+}
+
+.header__title {
+  width: 52.5%;
+  font-size: 0.75vw;
+  font-weight: 400;
+  margin: 0.67em 0;
+}
+
+.header__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3vw;
+  width: 22.5%;
+  text-align: right;
+}
+
+.header__toggle__bar {
+  opacity: 0.5;
+}
+
+.close__link {
+  display: none;
+}
+
+/* 
+FOOTER
+*/
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border: 1px solid red;
 }

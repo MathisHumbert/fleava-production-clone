@@ -15,13 +15,11 @@ varying vec2 vUv;
 void main(){
   float PI = 3.1415926;
 
-  vec3 newPos = position;
-
   float sine = sin(PI * uProgress);
 
   float wave = sine * 0.1 * sin(length(uv) * 5. );
 
-  vec4 startPosition =  modelMatrix * vec4(newPos, 1.);
+  vec4 startPosition =  modelMatrix * vec4(position, 1.);
   vec4 endPosition = vec4(position, 1.);
   endPosition.x *= uResolution.x;
   endPosition.y *= uResolution.y;
@@ -34,7 +32,8 @@ void main(){
 
   vec4 mixPosition = mix(startPosition, endPosition, cornersProgress + wave);
 
-  vUv = uv;
-
   gl_Position = projectionMatrix * viewMatrix * mixPosition;
+
+  vUv = uv;
 }
+
