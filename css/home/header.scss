@@ -1,0 +1,57 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 3vw 5vw 0;
+}
+
+.header__logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5vw;
+  width: 25%;
+}
+
+.header__logo svg {
+  width: auto;
+  height: 1.15vw;
+}
+
+.header__logo svg path {
+  fill: $main-color;
+}
+
+.header__logo p {
+  position: relative;
+  font-weight: 300;
+  font-size: 1.5vw;
+  letter-spacing: -0.05vw;
+  text-transform: none;
+  opacity: 0.5;
+}
+
+.header__title {
+  width: 52.5%;
+  font-size: 0.75vw;
+  font-weight: 400;
+  margin: 0.67em 0;
+}
+
+.header__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3vw;
+  width: 22.5%;
+  text-align: right;
+}
+
+.header__toggle__bar {
+  opacity: 0.5;
+}
+
+.close__link {
+  display: none;
+}

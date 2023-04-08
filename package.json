@@ -14,7 +14,9 @@
   "dependencies": {
     "@studio-freight/lenis": "^1.0.6",
     "gsap": "^3.11.5",
+    "include-media": "^2.0.0",
     "lil-gui": "^0.18.1",
+    "sass": "^1.61.0",
     "three": "^0.151.3",
     "vite-plugin-glsl": "^1.1.2"
   }
