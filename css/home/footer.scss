@@ -5,6 +5,7 @@
   width: 100%;
   display: flex;
   padding: 0 5vw 3vw;
+  pointer-events: none;
 }
 
 .footer__progress {
@@ -43,6 +44,7 @@
 .footer__progress__bar__line {
   transform: scaleX(0);
   transform-origin: top left;
+  transition: transform 0.1s ease, background 0.2 ease;
 }
 
 .footer__info {
@@ -54,9 +56,15 @@
   margin-right: 5vw;
 }
 
-/* .footer__info__base .line__inner {
-  transform: translateY(100%);
-} */
+.footer__info__base .line__inner {
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.4s;
+}
+
+.footer__info.active .footer__info__base .line__inner {
+  transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+  transform: translateY(-100%);
+}
 
 .footer__info__detail {
   position: absolute;
@@ -80,6 +88,12 @@
 
 .footer__info__detail .line__inner {
   transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+}
+
+.footer__info.active .footer__info__detail .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
+  transform: translateY(0);
 }
 
 .footer__scroll {

@@ -9,6 +9,9 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import fragment from './shaders/composer-fragment.glsl';
 import vertex from './shaders/composer-vertex.glsl';
 import Plane from './Plane';
+import Footer from './Footer';
+import Cursor from './Cursor';
+import Header from './Header';
 
 export default class Scene {
   constructor(canvas) {
@@ -18,6 +21,12 @@ export default class Scene {
     this.time = 0;
     this.velocity = 0;
     this.isFullScreen = false;
+
+    this.curorDom = document.querySelector('.cursor');
+
+    this.footer = new Footer();
+    this.cursor = new Cursor();
+    this.header = new Header(this.curorDom);
 
     this.initThree();
     this.initScroll();
@@ -76,7 +85,7 @@ export default class Scene {
 
   initPlanes() {
     const slides = [...document.querySelectorAll('.slide')];
-    this.planes = slides.map((el) => new Plane(el, this));
+    this.planes = slides.map((el, index) => new Plane(el, this, index));
   }
 
   initComposerPass() {
@@ -89,7 +98,6 @@ export default class Scene {
       uniforms: {
         tDiffuse: { value: null },
         uVelo: { value: 0 },
-        uTime: { value: 0 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -126,10 +134,14 @@ export default class Scene {
   }
 
   onScroll() {
+    const progressBar = document.querySelector('.footer__progress__bar__line');
     this.lenis.on('scroll', (e) => {
       for (const plane of this.planes) {
         this.velocity = e.velocity;
         plane.onScroll(e.scroll, e.velocity);
+        gsap.to(progressBar, {
+          scaleX: e.scroll / (e.dimensions.scrollWidth - this.width),
+        });
       }
     });
   }
@@ -155,27 +167,18 @@ export default class Scene {
   //   this.mesh.scale.set(650, 310, 1);
   //   this.scene.add(this.mesh);
 
-  //   this.timeline = gsap.timeline();
-  //   this.timeline
-  //     .to(this.material.uniforms.uCorners.value, {
-  //       x: 1,
-  //       y: 1,
-  //       duration: 1,
-  //     })
-  //     .to(
-  //       this.material.uniforms.uCorners.value,
-  //       { z: 1, w: 1, duration: 1 },
-  //       0.1
-  //     );
-  // }
-
-  // setupSettings() {
-  //   this.settings = {
-  //     progress: 0,
-  //   };
-
-  //   this.gui = new dat.GUI();
-  //   this.gui.add(this.settings, 'progress', 0, 1, 0.001);
+  // this.timeline = gsap.timeline();
+  // this.timeline
+  //   .to(this.material.uniforms.uCorners.value, {
+  //     x: 1,
+  //     y: 1,
+  //     duration: 1,
+  //   })
+  //   .to(
+  //     this.material.uniforms.uCorners.value,
+  //     { z: 1, w: 1, duration: 1 },
+  //     0.1
+  //   );
   // }
 
   onClick() {
@@ -204,17 +207,10 @@ export default class Scene {
   }
 
   update() {
-    this.time += 0.05;
-    // update uniforms
-    // this.material.uniforms.uProgress.value = this.settings.progress;
-    // this.material.uniforms.uTime.value = this.time;
-    // this.timeline.progress(this.settings.progress);
-
     this.customPass.uniforms.uVelo.value = this.velocity;
-    this.customPass.uniforms.uTime.value = this.time;
 
     for (const plane of this.planes) {
-      plane.update(this.time);
+      plane.update();
     }
 
     // Post processing

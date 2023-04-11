@@ -5,12 +5,13 @@ uniform mat4 modelMatrix;
 uniform vec2 uResolution;
 uniform float uProgress;
 uniform vec4 uCorners;
-uniform float uTime;
+uniform vec2 uQuadSize;
 
 attribute vec3 position;
 attribute vec2 uv;
 
 varying vec2 vUv;
+varying vec2 vSize;
 
 void main(){
   float PI = 3.1415926;
@@ -34,6 +35,7 @@ void main(){
 
   gl_Position = projectionMatrix * viewMatrix * mixPosition;
 
+  vSize = mix(uQuadSize, uResolution, cornersProgress);
   vUv = uv;
 }
 

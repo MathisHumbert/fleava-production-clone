@@ -1,0 +1,33 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6vw;
+  height: 6vw;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5000;
+  mix-blend-mode: difference;
+}
+
+.cursor__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cursor.active .cursor__circle {
+  transform: scale(1);
+}
+
+.cursor__circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform: scale(0.2);
+  background-color: $main-color;
+  border: 1px solid transparent;
+  transition: transform 0.35s ease, opacity 0.35s ease,
+    background-color 0.35s ease, border-color 0.35s ease;
+}

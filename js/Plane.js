@@ -5,14 +5,21 @@ import fragment from './shaders/plane-fragment.glsl';
 import vertex from './shaders/plane-vertex.glsl';
 
 export default class Plane {
-  constructor(el, scene) {
+  constructor(el, scene, index) {
     this.elDom = el;
     this.imgDom = el.querySelector('img');
+    this.bgData = el.dataset.bg;
+    this.colorData = el.dataset.color;
+    this.cursorDom = scene.curorDom;
+
     this.scene = scene.scene;
     this.width = scene.width;
     this.height = scene.height;
     this.texture = scene.textureLoader.load(this.imgDom.src);
     this.scroll = scene.lenis.scroll;
+    this.footer = scene.footer;
+    this.index = index;
+    this.isFullScreen = false;
 
     this.initPlane();
     this.addEvents();
@@ -21,6 +28,7 @@ export default class Plane {
   addEvents() {
     this.onMouseEnter();
     this.onMouseLeave();
+    this.onMouseClick();
   }
 
   initPlane() {
@@ -31,8 +39,9 @@ export default class Plane {
         uTexture: { value: this.texture },
         uResolution: { value: new THREE.Vector2(this.width, this.height) },
         uCorners: { value: new THREE.Vector4(0, 0, 0, 0) },
+        uTextureSize: { value: new THREE.Vector2(0, 0) },
+        uQuadSize: { value: new THREE.Vector2(0, 0) },
         uProgress: { value: 0 },
-        uTime: { value: 0 },
         uHover: { value: 0 },
         uVelo: { value: 0 },
       },
@@ -40,7 +49,7 @@ export default class Plane {
       vertexShader: vertex,
       fragmentShader: fragment,
     });
-
+    this.material.depthTest = false;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.scene.add(this.mesh);
 
@@ -63,6 +72,12 @@ export default class Plane {
       this.scroll + this.bounds.left - this.width / 2 + this.bounds.width / 2;
     this.mesh.position.y =
       -this.bounds.top + this.height / 2 - this.bounds.height / 2;
+
+    this.material.uniforms.uQuadSize.value.x = this.bounds.width;
+    this.material.uniforms.uQuadSize.value.y = this.bounds.height;
+
+    this.material.uniforms.uTextureSize.value.x = this.bounds.width;
+    this.material.uniforms.uTextureSize.value.y = this.bounds.height;
   }
 
   updatePosition() {
@@ -86,19 +101,78 @@ export default class Plane {
   }
 
   onMouseEnter() {
+    const clientValue = this.elDom.querySelector('.slide__client').textContent;
+    const directorValue =
+      this.elDom.querySelector('.slide__director').textContent;
+    const categoryValue =
+      this.elDom.querySelector('.slide__category').textContent;
+    const locationValue =
+      this.elDom.querySelector('.slide__location').textContent;
+    const industryValue =
+      this.elDom.querySelector('.slide__industry').textContent;
+    const yearValue = this.elDom.querySelector('.slide__year').textContent;
+
     this.elDom.addEventListener('mouseenter', () => {
       gsap.to(this.material.uniforms.uHover, { value: 1 });
+
+      this.cursorDom.classList.add('active');
+
+      this.footer.showDetail(
+        this.colorData,
+        clientValue,
+        directorValue,
+        categoryValue,
+        locationValue,
+        industryValue,
+        yearValue,
+        this.index
+      );
     });
   }
 
   onMouseLeave() {
     this.elDom.addEventListener('mouseleave', () => {
       gsap.to(this.material.uniforms.uHover, { value: 0 });
+
+      this.cursorDom.classList.remove('active');
+
+      this.footer.hideDetail();
     });
   }
 
-  update(time) {
-    this.material.uniforms.uTime.value = time;
+  onMouseClick() {
+    this.elDom.addEventListener('click', () => {
+      const value = this.isFullScreen ? 0 : 1;
+
+      this.timeline = gsap.timeline({
+        onStart: () => {
+          if (!this.isFullScreen) {
+            this.mesh.renderOrder = 10;
+          }
+          this.isFullScreen = !this.isFullScreen;
+        },
+        onComplete: () => {
+          if (!this.isFullScreen) {
+            this.mesh.renderOrder = 0;
+          }
+        },
+      });
+
+      this.timeline
+        .to(this.material.uniforms.uCorners.value, {
+          x: value,
+          y: value,
+          duration: 1,
+        })
+        .to(
+          this.material.uniforms.uCorners.value,
+          { z: value, w: value, duration: 1 },
+          0.1
+        );
+    });
+  }
+
+  update() {
     this.updatePosition();
   }
 }

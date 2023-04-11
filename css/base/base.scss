@@ -13,6 +13,7 @@ body {
   letter-spacing: 0.05vw;
   line-height: 1.2;
   font-family: 'Graphik';
+  transition: background 1s ease, color 0.2s ease;
 }
 
 ::-webkit-scrollbar {

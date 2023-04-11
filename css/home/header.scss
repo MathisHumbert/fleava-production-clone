@@ -8,10 +8,15 @@
 }
 
 .header__logo {
+  width: 25%;
+}
+
+.header__logo__link {
   display: flex;
   align-items: baseline;
   gap: 0.5vw;
-  width: 25%;
+  width: fit-content;
+  // border: 1px solid;
 }
 
 .header__logo svg {
@@ -30,6 +35,7 @@
   letter-spacing: -0.05vw;
   text-transform: none;
   opacity: 0.5;
+  line-height: 1;
 }
 
 .header__title {
