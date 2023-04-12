@@ -5,12 +5,13 @@ import fragment from './shaders/plane-fragment.glsl';
 import vertex from './shaders/plane-vertex.glsl';
 
 export default class Plane {
-  constructor(el, scene, index) {
+  constructor(el, scene, index, isFullScreen) {
     this.elDom = el;
     this.imgDom = el.querySelector('img');
     this.bgData = el.dataset.bg;
     this.colorData = el.dataset.color;
     this.cursorDom = scene.curorDom;
+    this.isFullScreen = isFullScreen;
 
     this.scene = scene.scene;
     this.width = scene.width;
@@ -19,7 +20,6 @@ export default class Plane {
     this.scroll = scene.lenis.scroll;
     this.footer = scene.footer;
     this.index = index;
-    this.isFullScreen = false;
 
     this.initPlane();
     this.addEvents();
@@ -28,7 +28,6 @@ export default class Plane {
   addEvents() {
     this.onMouseEnter();
     this.onMouseLeave();
-    this.onMouseClick();
   }
 
   initPlane() {
@@ -38,11 +37,15 @@ export default class Plane {
       uniforms: {
         uTexture: { value: this.texture },
         uResolution: { value: new THREE.Vector2(this.width, this.height) },
-        uCorners: { value: new THREE.Vector4(0, 0, 0, 0) },
+        uCorners: {
+          value: this.isFullScreen
+            ? new THREE.Vector4(1, 1, 1, 1)
+            : new THREE.Vector4(0, 0, 0, 0),
+        },
         uTextureSize: { value: new THREE.Vector2(0, 0) },
         uQuadSize: { value: new THREE.Vector2(0, 0) },
         uProgress: { value: 0 },
-        uHover: { value: 0 },
+        uHover: { value: this.isFullScreen ? 1 : 0 },
         uVelo: { value: 0 },
       },
       // wireframe: true,
@@ -50,7 +53,11 @@ export default class Plane {
       fragmentShader: fragment,
     });
     this.material.depthTest = false;
+
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    if (this.isFullScreen) {
+      this.mesh.renderOrder = 10;
+    }
     this.scene.add(this.mesh);
 
     this.setBounds();
@@ -132,44 +139,57 @@ export default class Plane {
 
   onMouseLeave() {
     this.elDom.addEventListener('mouseleave', () => {
-      gsap.to(this.material.uniforms.uHover, { value: 0 });
+      if (!this.isFullScreen) {
+        gsap.to(this.material.uniforms.uHover, { value: 0 });
 
-      this.cursorDom.classList.remove('active');
+        this.cursorDom.classList.remove('active');
 
-      this.footer.hideDetail();
+        this.footer.hideDetail();
+      }
     });
   }
 
-  onMouseClick() {
-    this.elDom.addEventListener('click', () => {
-      const value = this.isFullScreen ? 0 : 1;
-
-      this.timeline = gsap.timeline({
-        onStart: () => {
-          if (!this.isFullScreen) {
-            this.mesh.renderOrder = 10;
-          }
-          this.isFullScreen = !this.isFullScreen;
-        },
-        onComplete: () => {
-          if (!this.isFullScreen) {
-            this.mesh.renderOrder = 0;
-          }
-        },
-      });
-
-      this.timeline
-        .to(this.material.uniforms.uCorners.value, {
-          x: value,
-          y: value,
-          duration: 1,
-        })
-        .to(
-          this.material.uniforms.uCorners.value,
-          { z: value, w: value, duration: 1 },
-          0.1
-        );
+  onZoom() {
+    this.timeline = gsap.timeline({
+      onStart: () => {
+        this.mesh.renderOrder = 10;
+        this.isFullScreen = true;
+      },
     });
+
+    return this.timeline
+      .to(this.material.uniforms.uCorners.value, {
+        x: 1,
+        y: 1,
+        duration: 1,
+      })
+      .to(
+        this.material.uniforms.uCorners.value,
+        { z: 1, w: 1, duration: 1 },
+        0.1
+      );
+  }
+
+  onUnZoom() {
+    this.timeline = gsap.timeline({
+      onComplete: () => {
+        this.mesh.renderOrder = 0;
+        // this.material.uniforms.uHover = 0;
+        this.isFullScreen = false;
+      },
+    });
+
+    return this.timeline
+      .to(this.material.uniforms.uCorners.value, {
+        x: 0,
+        y: 0,
+        duration: 1,
+      })
+      .to(
+        this.material.uniforms.uCorners.value,
+        { z: 0, w: 0, duration: 1 },
+        0.1
+      );
   }
 
   update() {

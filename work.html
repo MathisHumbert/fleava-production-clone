@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="--main-color: #b9c2de">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -158,7 +158,7 @@
           <div class="footer__progress__bar__track"></div>
         </div>
       </div>
-      <div class="footer__info">
+      <div class="footer__info active">
         <div class="footer__info__detail">
           <div class="lines fade">
             <span class="line">
@@ -173,24 +173,24 @@
           </div>
           <div class="lines">
             <span class="line">
-              <span class="line__inner" data-client>client name</span>
+              <span class="line__inner" data-client>Fragrance Noir</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-director>director name</span>
+              <span class="line__inner" data-director>Lewis Webber</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-category>category name</span>
+              <span class="line__inner" data-category>Commercial</span>
             </span>
           </div>
           <div class="lines fade">
             <span class="line">
-              <span class="line__inner">location</span>
+              <span class="line__inner">Bali, Indonesia</span>
             </span>
             <span class="line">
-              <span class="line__inner">industry</span>
+              <span class="line__inner">Consumer Product</span>
             </span>
             <span class="line">
-              <span class="line__inner">year</span>
+              <span class="line__inner">2018</span>
             </span>
           </div>
           <div class="lines">
@@ -221,8 +221,19 @@
         </span>
       </div>
     </footer>
-    <main data-barba="container" data-barba-namespace="home">
-      <div class="home" id="page__wrapper" data-page="home"></div>
+    <main data-barba="container" data-barba-namespace="work" data-index="0">
+      <div
+        id="page__wrapper"
+        data-page="work"
+        data-bg="#1B1C23"
+        data-color="#B9C2DE"
+        data-index="0"
+      >
+        <div class="video">
+          <div class="video__player"></div>
+          <a href="/index.html" class="video__control"></a>
+        </div>
+      </div>
     </main>
     <script type="module" src="/js/app.js"></script>
   </body>

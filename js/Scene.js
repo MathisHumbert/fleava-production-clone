@@ -5,6 +5,7 @@ import Lenis from '@studio-freight/lenis';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import barba from '@barba/core';
 
 import fragment from './shaders/composer-fragment.glsl';
 import vertex from './shaders/composer-vertex.glsl';
@@ -14,8 +15,10 @@ import Cursor from './Cursor';
 import Header from './Header';
 
 export default class Scene {
-  constructor(canvas) {
+  constructor(canvas, pageWrapper) {
     this.canvas = canvas;
+    this.pageWrapper = pageWrapper;
+    this.page = pageWrapper.dataset.page;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.time = 0;
@@ -32,11 +35,11 @@ export default class Scene {
     this.initScroll();
     this.initPlanes();
     this.initComposerPass();
+    this.initBarbara();
     this.addEvents();
-    // this.addObject();
-    // this.onClick();
-    // this.setupSettings();
     this.update();
+
+    console.log('init');
   }
 
   initThree() {
@@ -81,11 +84,24 @@ export default class Scene {
     requestAnimationFrame(raf);
 
     this.lenis = lenis;
+
+    if (this.page === 'work') {
+      this.lenis.stop();
+    }
   }
 
   initPlanes() {
     const slides = [...document.querySelectorAll('.slide')];
-    this.planes = slides.map((el, index) => new Plane(el, this, index));
+    this.planes = slides.map((el, index) => {
+      let isFullScreen = false;
+      if (
+        this.page === 'work' &&
+        Number(this.pageWrapper.dataset.index) === index
+      ) {
+        isFullScreen = true;
+      }
+      return new Plane(el, this, index, isFullScreen);
+    });
   }
 
   initComposerPass() {
@@ -107,6 +123,56 @@ export default class Scene {
     this.customPass.renderToScreen = true;
 
     this.composer.addPass(this.customPass);
+  }
+
+  initBarbara() {
+    let that = this;
+    barba.init({
+      transitions: [
+        {
+          name: 'from-home-to-work',
+          from: {
+            namespace: ['home'],
+          },
+          to: {
+            namespace: ['work'],
+          },
+          leave(data) {
+            console.log('leave home');
+
+            that.lenis.stop();
+            const planeIndex = data.trigger.dataset.index;
+            return that.planes[planeIndex].onZoom();
+          },
+          enter() {
+            console.log('enter work');
+
+            document.querySelector('.footer__info').classList.add('active');
+          },
+        },
+        {
+          name: 'from-work-to-home',
+          from: {
+            namespace: ['work'],
+          },
+          to: {
+            namespace: ['home'],
+          },
+          leave(data) {
+            console.log('leave work');
+
+            const planeIndex = Number(data.current.container.dataset.index);
+            console.log(planeIndex);
+            return that.planes[planeIndex].onUnZoom();
+          },
+          enter() {
+            console.log('enter home');
+
+            that.lenis.start();
+          },
+        },
+      ],
+    });
   }
 
   addEvents() {
@@ -145,41 +211,6 @@ export default class Scene {
       }
     });
   }
-
-  // addObject() {
-  //   this.texture = new THREE.TextureLoader().load('/texture.jpg');
-
-  //   this.geometry = new THREE.PlaneGeometry(1, 1, 10, 10);
-  //   this.material = new THREE.RawShaderMaterial({
-  //     uniforms: {
-  //       uTexture: { value: this.texture },
-  //       uResolution: { value: new THREE.Vector2(this.width, this.height) },
-  //       uCorners: { value: new THREE.Vector4(0, 0, 0, 0) },
-  //       uProgress: { value: 0 },
-  //       uTime: { value: 0 },
-  //     },
-  //     wireframe: true,
-  //     vertexShader: vertex,
-  //     fragmentShader: fragment,
-  //   });
-
-  //   this.mesh = new THREE.Mesh(this.geometry, this.material);
-  //   this.mesh.scale.set(650, 310, 1);
-  //   this.scene.add(this.mesh);
-
-  // this.timeline = gsap.timeline();
-  // this.timeline
-  //   .to(this.material.uniforms.uCorners.value, {
-  //     x: 1,
-  //     y: 1,
-  //     duration: 1,
-  //   })
-  //   .to(
-  //     this.material.uniforms.uCorners.value,
-  //     { z: 1, w: 1, duration: 1 },
-  //     0.1
-  //   );
-  // }
 
   onClick() {
     this.canvas.addEventListener('click', () => {
