@@ -26,6 +26,10 @@ export default class Scene {
     this.isFullScreen = false;
 
     this.curorDom = document.querySelector('.cursor');
+    this.footerScrollDom = document.querySelector(
+      '.footer__scroll .line__inner'
+    );
+    console.log(this.footerScrollDom);
 
     this.footer = new Footer();
     this.cursor = new Cursor();
@@ -38,8 +42,6 @@ export default class Scene {
     this.initBarbara();
     this.addEvents();
     this.update();
-
-    console.log('init');
   }
 
   initThree() {
@@ -127,7 +129,9 @@ export default class Scene {
 
   initBarbara() {
     let that = this;
+
     barba.init({
+      preventRunning: true,
       transitions: [
         {
           name: 'from-home-to-work',
@@ -141,12 +145,14 @@ export default class Scene {
             console.log('leave home');
 
             that.lenis.stop();
-            const planeIndex = data.trigger.dataset.index;
-            return that.planes[planeIndex].onZoom();
+            const planeIndex = Number(data.next.container.dataset.index);
+
+            return that.planes[planeIndex].onZoom(that.footerScrollDom);
           },
           enter() {
             console.log('enter work');
 
+            // that.lenis.start();
             document.querySelector('.footer__info').classList.add('active');
           },
         },
@@ -162,8 +168,7 @@ export default class Scene {
             console.log('leave work');
 
             const planeIndex = Number(data.current.container.dataset.index);
-            console.log(planeIndex);
-            return that.planes[planeIndex].onUnZoom();
+            return that.planes[planeIndex].onUnZoom(that.footerScrollDom);
           },
           enter() {
             console.log('enter home');

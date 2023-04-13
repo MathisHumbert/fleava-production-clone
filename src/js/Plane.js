@@ -11,7 +11,6 @@ export default class Plane {
     this.bgData = el.dataset.bg;
     this.colorData = el.dataset.color;
     this.cursorDom = scene.curorDom;
-    this.isFullScreen = isFullScreen;
 
     this.scene = scene.scene;
     this.width = scene.width;
@@ -20,6 +19,7 @@ export default class Plane {
     this.scroll = scene.lenis.scroll;
     this.footer = scene.footer;
     this.index = index;
+    this.isFullScreen = isFullScreen;
 
     this.initPlane();
     this.addEvents();
@@ -120,20 +120,22 @@ export default class Plane {
     const yearValue = this.elDom.querySelector('.slide__year').textContent;
 
     this.elDom.addEventListener('mouseenter', () => {
-      gsap.to(this.material.uniforms.uHover, { value: 1 });
+      if (!this.isFullScreen) {
+        gsap.to(this.material.uniforms.uHover, { value: 1 });
 
-      this.cursorDom.classList.add('active');
+        this.cursorDom.classList.add('active');
 
-      this.footer.showDetail(
-        this.colorData,
-        clientValue,
-        directorValue,
-        categoryValue,
-        locationValue,
-        industryValue,
-        yearValue,
-        this.index
-      );
+        this.footer.showDetail(
+          this.colorData,
+          clientValue,
+          directorValue,
+          categoryValue,
+          locationValue,
+          industryValue,
+          yearValue,
+          this.index
+        );
+      }
     });
   }
 
@@ -149,11 +151,12 @@ export default class Plane {
     });
   }
 
-  onZoom() {
+  onZoom(el) {
     this.timeline = gsap.timeline({
+      defaults: { ease: 'power2.out' },
       onStart: () => {
-        this.mesh.renderOrder = 10;
         this.isFullScreen = true;
+        this.mesh.renderOrder = 10;
       },
     });
 
@@ -161,20 +164,28 @@ export default class Plane {
       .to(this.material.uniforms.uCorners.value, {
         x: 1,
         y: 1,
-        duration: 1,
       })
+      .to(this.material.uniforms.uCorners.value, { z: 1, w: 1 }, 0.1)
       .to(
-        this.material.uniforms.uCorners.value,
-        { z: 1, w: 1, duration: 1 },
-        0.1
-      );
+        el,
+        {
+          yPercent: -100,
+          duration: 0.3,
+          onComplete: () => {
+            el.textContent = 'scroll / [esc] to close';
+            gsap.set(el, { yPercent: 100 });
+          },
+        },
+        0.2
+      )
+      .to(el, { yPercent: 0, duration: 0.3 });
   }
 
-  onUnZoom() {
+  onUnZoom(el) {
     this.timeline = gsap.timeline({
+      defaults: { ease: 'power2.out' },
       onComplete: () => {
         this.mesh.renderOrder = 0;
-        // this.material.uniforms.uHover = 0;
         this.isFullScreen = false;
       },
     });
@@ -183,13 +194,21 @@ export default class Plane {
       .to(this.material.uniforms.uCorners.value, {
         x: 0,
         y: 0,
-        duration: 1,
       })
+      .to(this.material.uniforms.uCorners.value, { z: 0, w: 0 }, 0.1)
       .to(
-        this.material.uniforms.uCorners.value,
-        { z: 0, w: 0, duration: 1 },
-        0.1
-      );
+        el,
+        {
+          yPercent: -100,
+          duration: 0.3,
+          onComplete: () => {
+            el.textContent = 'scroll / drag';
+            gsap.set(el, { yPercent: 100 });
+          },
+        },
+        0.2
+      )
+      .to(el, { yPercent: 0, duration: 0.3 });
   }
 
   update() {
