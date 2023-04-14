@@ -59,6 +59,26 @@
   opacity: 0.5;
 }
 
+.about__link .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
+  transform: translateY(0);
+}
+
+.header__toggle.active .about__link .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: translateY(-100%);
+}
+
 .close__link {
-  display: none;
+  position: absolute;
+}
+
+.close__link .line__inner {
+  transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+  transform: translateY(100%);
+}
+
+.header__toggle.active .close__link .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
+  transform: translateY(0);
 }

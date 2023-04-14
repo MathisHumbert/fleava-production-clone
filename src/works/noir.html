@@ -5,12 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="../vite.svg" />
     <link rel="stylesheet" href="../css/index.scss" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fleava Films</title>
+    <title>Fragrance Noir | Fleava Films</title>
   </head>
   <body data-barba="wrapper">
     <div class="cursor">
       <div class="cursor__inner">
-        <div class="cursor__circle"></div>
+        <div class="cursor__circle">
+          <span class="cursor__play">play</span>
+          <span class="cursor__close">close</span>
+        </div>
       </div>
     </div>
     <header class="header">
@@ -38,7 +41,7 @@
           <span class="line__inner">House</span>
         </span>
       </h1>
-      <div class="header__toggle">
+      <div class="header__toggle active">
         <span class="header__toggle__bar">/</span>
         <a href="/about" class="header__toggle__link about__link">
           <span class="line">
@@ -185,7 +188,7 @@
     <footer class="footer">
       <div class="footer__progress">
         <div class="footer__progress__num">
-          <span class="footer__progress__toggle">00</span>
+          <span class="footer__progress__toggle">01</span>
           &nbsp;/&nbsp;
           <span>07</span>
         </div>
@@ -220,24 +223,24 @@
           </div>
           <div class="lines fade">
             <span class="line">
-              <span class="line__inner" data-location>location</span>
+              <span class="line__inner">location</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-industry>industry</span>
+              <span class="line__inner">industry</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-year>year</span>
+              <span class="line__inner">year</span>
             </span>
           </div>
           <div class="lines">
             <span class="line">
-              <span class="line__inner">Bali, Indonesia</span>
+              <span class="line__inner" data-location>Bali, Indonesia</span>
             </span>
             <span class="line">
-              <span class="line__inner">Consumer Product</span>
+              <span class="line__inner" data-industry>Consumer Product</span>
             </span>
             <span class="line">
-              <span class="line__inner">2018</span>
+              <span class="line__inner" data-year>2018</span>
             </span>
           </div>
         </div>
@@ -251,8 +254,11 @@
           <div>&nbsp;</div>
         </div>
       </div>
-      <div class="footer__scroll">
-        <span class="line">
+      <div class="footer__scroll active">
+        <span class="line footer__scroll__drag">
+          <span class="line__inner">Scroll / Drag</span>
+        </span>
+        <span class="line footer__scroll__close">
           <span class="line__inner">Scroll / [esc] to close</span>
         </span>
       </div>

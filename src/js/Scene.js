@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
-import * as dat from 'lil-gui';
 import Lenis from '@studio-freight/lenis';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -13,6 +12,7 @@ import Plane from './Plane';
 import Footer from './Footer';
 import Cursor from './Cursor';
 import Header from './Header';
+import Video from './Video';
 
 export default class Scene {
   constructor(canvas, pageWrapper) {
@@ -26,13 +26,14 @@ export default class Scene {
     this.isFullScreen = false;
 
     this.curorDom = document.querySelector('.cursor');
-    this.footerScrollDom = document.querySelector(
-      '.footer__scroll .line__inner'
-    );
-    console.log(this.footerScrollDom);
+    this.footerScrollDom = document.querySelector('.footer__scroll');
+    this.headerToggleDom = document.querySelector('.header__toggle');
 
     this.footer = new Footer();
     this.cursor = new Cursor();
+    if (this.page === 'work') {
+      this.video = new Video(this);
+    }
     this.header = new Header(this.curorDom);
 
     this.initThree();
@@ -86,10 +87,6 @@ export default class Scene {
     requestAnimationFrame(raf);
 
     this.lenis = lenis;
-
-    if (this.page === 'work') {
-      this.lenis.stop();
-    }
   }
 
   initPlanes() {
@@ -111,7 +108,7 @@ export default class Scene {
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.composer.addPass(this.renderPass);
 
-    //custom shader pass
+    // custom shader pass
     this.customShaderPass = {
       uniforms: {
         tDiffuse: { value: null },
@@ -142,18 +139,25 @@ export default class Scene {
             namespace: ['work'],
           },
           leave(data) {
-            console.log('leave home');
-
             that.lenis.stop();
+
             const planeIndex = Number(data.next.container.dataset.index);
 
-            return that.planes[planeIndex].onZoom(that.footerScrollDom);
+            return that.planes[planeIndex].onZoom(
+              that.footerScrollDom,
+              that.headerToggleDom
+            );
           },
           enter() {
-            console.log('enter work');
+            if (that.video) {
+              that.video.removeEvents();
+            }
 
-            // that.lenis.start();
+            that.lenis.start();
+            that.page = 'work';
+
             document.querySelector('.footer__info').classList.add('active');
+            that.video = new Video(that);
           },
         },
         {
@@ -165,16 +169,19 @@ export default class Scene {
             namespace: ['home'],
           },
           leave(data) {
-            console.log('leave work');
+            that.page = 'home';
+
+            document.querySelector('.cursor').classList.remove('close');
+
+            that.video.removeEvents();
 
             const planeIndex = Number(data.current.container.dataset.index);
-            return that.planes[planeIndex].onUnZoom(that.footerScrollDom);
+            return that.planes[planeIndex].onUnZoom(
+              that.footerScrollDom,
+              that.headerToggleDom
+            );
           },
-          enter() {
-            console.log('enter home');
-
-            that.lenis.start();
-          },
+          enter() {},
         },
       ],
     });
@@ -207,6 +214,11 @@ export default class Scene {
   onScroll() {
     const progressBar = document.querySelector('.footer__progress__bar__line');
     this.lenis.on('scroll', (e) => {
+      if (this.page === 'work') {
+        barba.go('/');
+        this.page = 'home';
+      }
+
       for (const plane of this.planes) {
         this.velocity = e.velocity;
         plane.onScroll(e.scroll, e.velocity);
@@ -214,31 +226,6 @@ export default class Scene {
           scaleX: e.scroll / (e.dimensions.scrollWidth - this.width),
         });
       }
-    });
-  }
-
-  onClick() {
-    this.canvas.addEventListener('click', () => {
-      const endValue = this.isFullScreen ? 0 : 1;
-
-      const tl = gsap.timeline({
-        onStart: () => {
-          this.isFullScreen = !this.isFullScreen;
-          this.material.uniforms.uProgress.value = 0;
-        },
-      });
-
-      tl.to(this.material.uniforms.uCorners.value, {
-        x: endValue,
-        y: endValue,
-        duration: 1,
-      })
-        .to(
-          this.material.uniforms.uCorners.value,
-          { z: endValue, w: endValue, duration: 1 },
-          0.1
-        )
-        .to(this.material.uniforms.uProgress, { value: 1, duration: 1.1 }, 0);
     });
   }
 

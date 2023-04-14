@@ -151,7 +151,7 @@ export default class Plane {
     });
   }
 
-  onZoom(el) {
+  onZoom(footerDom, headerDom) {
     this.timeline = gsap.timeline({
       defaults: { ease: 'power2.out' },
       onStart: () => {
@@ -166,22 +166,13 @@ export default class Plane {
         y: 1,
       })
       .to(this.material.uniforms.uCorners.value, { z: 1, w: 1 }, 0.1)
-      .to(
-        el,
-        {
-          yPercent: -100,
-          duration: 0.3,
-          onComplete: () => {
-            el.textContent = 'scroll / [esc] to close';
-            gsap.set(el, { yPercent: 100 });
-          },
-        },
-        0.2
-      )
-      .to(el, { yPercent: 0, duration: 0.3 });
+      .add(() => {
+        headerDom.classList.add('active');
+        footerDom.classList.add('active');
+      }, 0.2);
   }
 
-  onUnZoom(el) {
+  onUnZoom(footerDom, headerDom) {
     this.timeline = gsap.timeline({
       defaults: { ease: 'power2.out' },
       onComplete: () => {
@@ -196,19 +187,10 @@ export default class Plane {
         y: 0,
       })
       .to(this.material.uniforms.uCorners.value, { z: 0, w: 0 }, 0.1)
-      .to(
-        el,
-        {
-          yPercent: -100,
-          duration: 0.3,
-          onComplete: () => {
-            el.textContent = 'scroll / drag';
-            gsap.set(el, { yPercent: 100 });
-          },
-        },
-        0.2
-      )
-      .to(el, { yPercent: 0, duration: 0.3 });
+      .add(() => {
+        headerDom.classList.remove('active');
+        footerDom.classList.remove('active');
+      }, 0.2);
   }
 
   update() {

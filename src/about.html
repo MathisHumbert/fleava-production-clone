@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" style="--main-color: #beaf90">
+<html lang="en" style="--main-color: #e0ccbb">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="../vite.svg" />
-    <link rel="stylesheet" href="../css/index.scss" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="./css/index.scss" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Turiya | Fleava Films</title>
+    <title>About | Fleava Films</title>
   </head>
   <body data-barba="wrapper">
     <div class="cursor">
@@ -41,7 +41,7 @@
           <span class="line__inner">House</span>
         </span>
       </h1>
-      <div class="header__toggle active">
+      <div class="header__toggle">
         <span class="header__toggle__bar">/</span>
         <a href="/about" class="header__toggle__link about__link">
           <span class="line">
@@ -184,11 +184,10 @@
         </div>
       </div>
     </div>
-    <canvas id="webgl"></canvas>
     <footer class="footer">
       <div class="footer__progress">
         <div class="footer__progress__num">
-          <span class="footer__progress__toggle">02</span>
+          <span class="footer__progress__toggle">00</span>
           &nbsp;/&nbsp;
           <span>07</span>
         </div>
@@ -197,7 +196,7 @@
           <div class="footer__progress__bar__track"></div>
         </div>
       </div>
-      <div class="footer__info active">
+      <div class="footer__info">
         <div class="footer__info__detail">
           <div class="lines fade">
             <span class="line">
@@ -212,13 +211,13 @@
           </div>
           <div class="lines">
             <span class="line">
-              <span class="line__inner" data-client>The Turiya</span>
+              <span class="line__inner" data-client>client name</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-director>Kezia Alexandra</span>
+              <span class="line__inner" data-director>director name</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-category>Branding</span>
+              <span class="line__inner" data-category>category name</span>
             </span>
           </div>
           <div class="lines fade">
@@ -234,13 +233,13 @@
           </div>
           <div class="lines">
             <span class="line">
-              <span class="line__inner" data-location>Bali, Indonesia</span>
+              <span class="line__inner" data-location>location name</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-industry>Hospitality</span>
+              <span class="line__inner" data-industry>industry name</span>
             </span>
             <span class="line">
-              <span class="line__inner" data-year>2022</span>
+              <span class="line__inner" data-year>year name</span>
             </span>
           </div>
         </div>
@@ -254,7 +253,7 @@
           <div>&nbsp;</div>
         </div>
       </div>
-      <div class="footer__scroll active">
+      <div class="footer__scroll">
         <span class="line footer__scroll__drag">
           <span class="line__inner">Scroll / Drag</span>
         </span>
@@ -263,20 +262,10 @@
         </span>
       </div>
     </footer>
-    <main data-barba="container" data-barba-namespace="work" data-index="1">
-      <div
-        id="page__wrapper"
-        data-page="work"
-        data-bg="#241F18"
-        data-color="#BEAF90"
-        data-index="1"
-      >
-        <div class="video">
-          <div class="video__player"></div>
-          <a href="/" class="video__control"></a>
-        </div>
-      </div>
+    <main data-barba="container" data-barba-namespace="about">
+      <div id="page__wrapper" data-page="about"></div>
     </main>
-    <script type="module" src="../js/app.js"></script>
+    <canvas id="webgl"></canvas>
+    <script type="module" src="./js/app.js"></script>
   </body>
 </html>

@@ -99,4 +99,31 @@
 .footer__scroll {
   width: 22.5%;
   text-align: right;
+  position: relative;
+}
+
+.footer__scroll__drag .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
+  transform: translateY(0);
+}
+
+.footer__scroll.active .footer__scroll__drag .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: translateY(-100%);
+}
+
+.footer__scroll__close {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.footer__scroll__close .line__inner {
+  transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+  transform: translateY(100%);
+}
+
+.footer__scroll.active .footer__scroll__close .line__inner {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
+  transform: translateY(0);
 }

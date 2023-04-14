@@ -8,6 +8,13 @@
   pointer-events: none;
   z-index: 5000;
   mix-blend-mode: difference;
+  transition: top 0.35s ease;
+}
+
+.cursor.play,
+.cursor.close {
+  mix-blend-mode: normal;
+  top: -2vw;
 }
 
 .cursor__inner {
@@ -26,8 +33,28 @@
   height: 100%;
   border-radius: 50%;
   transform: scale(0.2);
-  background-color: $main-color;
+  background: $main-color;
   border: 1px solid transparent;
-  transition: transform 0.35s ease, opacity 0.35s ease,
-    background-color 0.35s ease, border-color 0.35s ease;
+  transition: transform 0.35s ease, opacity 0.35s ease, background 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.cursor__play,
+.cursor__close {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 400;
+  color: #000;
+  opacity: 0;
+  transform: opacity 0.4s ease;
+}
+
+.cursor.play .cursor__play {
+  opacity: 1;
+}
+
+.cursor.close .cursor__close {
+  opacity: 1;
 }

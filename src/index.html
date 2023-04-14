@@ -10,7 +10,10 @@
   <body data-barba="wrapper">
     <div class="cursor">
       <div class="cursor__inner">
-        <div class="cursor__circle"></div>
+        <div class="cursor__circle">
+          <span class="cursor__play">play</span>
+          <span class="cursor__close">close</span>
+        </div>
       </div>
     </div>
     <header class="header">
@@ -181,7 +184,6 @@
         </div>
       </div>
     </div>
-    <canvas id="webgl"></canvas>
     <footer class="footer">
       <div class="footer__progress">
         <div class="footer__progress__num">
@@ -252,14 +254,18 @@
         </div>
       </div>
       <div class="footer__scroll">
-        <span class="line">
+        <span class="line footer__scroll__drag">
           <span class="line__inner">Scroll / Drag</span>
+        </span>
+        <span class="line footer__scroll__close">
+          <span class="line__inner">Scroll / [esc] to close</span>
         </span>
       </div>
     </footer>
     <main data-barba="container" data-barba-namespace="home">
       <div class="home" id="page__wrapper" data-page="home"></div>
     </main>
+    <canvas id="webgl"></canvas>
     <script type="module" src="./js/app.js"></script>
   </body>
 </html>
