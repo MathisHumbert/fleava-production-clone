@@ -16,12 +16,12 @@ import Works from './Works';
 import About from './About';
 
 export default class Scene {
-  constructor(canvas, container, pageWrapper) {
+  constructor(canvas, pageWrapper) {
     this.canvas = canvas;
     this.pageWrapper = pageWrapper;
     this.page = pageWrapper.dataset.page;
-    this.width = container.offsetWidth;
-    this.height = container.offsetHeight;
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
     this.velocity = 0;
     this.isFullScreen = false;
 
@@ -318,8 +318,8 @@ export default class Scene {
 
   onResize() {
     window.addEventListener('resize', () => {
-      this.width = container.offsetWidth;
-      this.height = container.offsetHeight;
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
 
       this.camera.aspect = this.width / this.height;
       this.camera.fov =
