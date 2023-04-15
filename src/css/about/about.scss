@@ -1,0 +1,58 @@
+.about__wrapper {
+  width: 100vw;
+  height: 100vh;
+  padding: 15vw 0 3vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.about__info {
+  display: flex;
+  padding: 0 5vw;
+  width: 100%;
+}
+
+.about__info__title {
+  width: 25%;
+  font-size: 0.75vw;
+  font-weight: 400;
+  margin: 0.67em 0;
+}
+
+.about__info__text {
+  width: 52.5%;
+  font-weight: 300;
+  font-size: 2vw;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.about__footer {
+  width: 100vw;
+  padding: 5vw 5vw 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.about__footer a {
+  text-decoration: underline;
+  line-height: 2;
+}
+
+.about__footer__left {
+  width: 25%;
+}
+
+.about__footer__middle {
+  width: 52.5%;
+  display: flex;
+  align-items: flex-end;
+  gap: 3vw;
+  font-size: 90%;
+}
+
+.about__footer__right {
+  width: 22.5%;
+  text-align: right;
+}

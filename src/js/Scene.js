@@ -12,44 +12,55 @@ import Plane from './Plane';
 import Footer from './Footer';
 import Cursor from './Cursor';
 import Header from './Header';
-import Video from './Video';
+import Works from './Works';
+import About from './About';
 
 export default class Scene {
-  constructor(canvas, pageWrapper) {
+  constructor(canvas, container, pageWrapper) {
     this.canvas = canvas;
     this.pageWrapper = pageWrapper;
     this.page = pageWrapper.dataset.page;
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    this.time = 0;
+    this.width = container.offsetWidth;
+    this.height = container.offsetHeight;
     this.velocity = 0;
     this.isFullScreen = false;
 
-    this.curorDom = document.querySelector('.cursor');
+    this.cursorDom = document.querySelector('.cursor');
     this.footerScrollDom = document.querySelector('.footer__scroll');
     this.headerToggleDom = document.querySelector('.header__toggle');
+    this.transitionPathDom = document.querySelector(
+      '.transition__overlay__path'
+    );
 
+    this.start();
+  }
+
+  start() {
     this.footer = new Footer();
+    this.header = new Header(this.cursorDom);
     this.cursor = new Cursor();
+
     if (this.page === 'work') {
-      this.video = new Video(this);
+      this.works = new Works(this);
     }
-    this.header = new Header(this.curorDom);
+
+    if (this.page === 'about') {
+      this.about = new About(this);
+    }
 
     this.initThree();
     this.initScroll();
     this.initPlanes();
     this.initComposerPass();
     this.initBarbara();
+
     this.addEvents();
     this.update();
   }
 
   initThree() {
-    // Scene
     this.scene = new THREE.Scene();
 
-    // Camera
     this.perspective = 600;
     const fov =
       Math.atan(this.height / 2 / this.perspective) * (180 / Math.PI) * 2;
@@ -61,7 +72,6 @@ export default class Scene {
     );
     this.camera.position.z = this.perspective;
 
-    // Renderer
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
@@ -70,13 +80,13 @@ export default class Scene {
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Texture Loader
     this.textureLoader = new THREE.TextureLoader();
   }
 
   initScroll() {
     const lenis = new Lenis({
       orientation: 'horizontal',
+      gestureOrientation: 'both',
     });
 
     function raf(time) {
@@ -86,7 +96,27 @@ export default class Scene {
 
     requestAnimationFrame(raf);
 
+    if (this.page === 'about' || this.page === 'work') {
+      lenis.stop();
+    }
+
     this.lenis = lenis;
+
+    // const slider = document.querySelector('.slider__carousel');
+
+    // console.log(slider.offsetWidth);
+
+    // gsap.to('.slider__carousel', {
+    //   ease: 'none',
+    //   x: () => `-${slider.offsetWidth - window.innerWidth}`,
+    //   scrollTrigger: {
+    //     trigger: '.slider__container',
+    //     pin: true,
+    //     scrub: true,
+    //     invalidateOnRefresh: true,
+    //     markers: true,
+    //   },
+    // });
   }
 
   initPlanes() {
@@ -108,7 +138,6 @@ export default class Scene {
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.composer.addPass(this.renderPass);
 
-    // custom shader pass
     this.customShaderPass = {
       uniforms: {
         tDiffuse: { value: null },
@@ -142,6 +171,7 @@ export default class Scene {
             that.lenis.stop();
 
             const planeIndex = Number(data.next.container.dataset.index);
+            that.page = 'work';
 
             return that.planes[planeIndex].onZoom(
               that.footerScrollDom,
@@ -149,15 +179,13 @@ export default class Scene {
             );
           },
           enter() {
-            if (that.video) {
-              that.video.removeEvents();
+            if (that.works) {
+              that.works.removeEvents();
+            } else {
+              that.works = new Works(that);
             }
 
-            that.lenis.start();
-            that.page = 'work';
-
             document.querySelector('.footer__info').classList.add('active');
-            that.video = new Video(that);
           },
         },
         {
@@ -173,7 +201,7 @@ export default class Scene {
 
             document.querySelector('.cursor').classList.remove('close');
 
-            that.video.removeEvents();
+            that.works.removeEvents();
 
             const planeIndex = Number(data.current.container.dataset.index);
             return that.planes[planeIndex].onUnZoom(
@@ -181,7 +209,103 @@ export default class Scene {
               that.headerToggleDom
             );
           },
-          enter() {},
+          enter() {
+            that.lenis.start();
+          },
+        },
+        {
+          name: 'from-home-to-about',
+          from: {
+            namespace: ['home'],
+          },
+          to: {
+            namespace: ['about'],
+          },
+          leave() {
+            that.page = 'about';
+            document.documentElement.style.setProperty(
+              '--main-color',
+              '#e0ccbb'
+            );
+
+            that.lenis.stop();
+
+            const tl = gsap.timeline();
+
+            return tl
+              .add(() => {
+                that.footer.hideFooter();
+              })
+              .set(that.transitionPathDom, {
+                attr: { d: 'M 0 100 V 100 Q 50 100 100 100 V 100 z' },
+              })
+              .to(that.transitionPathDom, {
+                attr: { d: 'M 0 100 V 50 Q 50 0 100 50 V 100 z' },
+                duration: 0.8,
+                ease: 'power4.in',
+              })
+              .to(that.transitionPathDom, {
+                attr: { d: 'M 0 100 V 0 Q 50 0 100 0 V 100 z' },
+                duration: 0.3,
+                ease: 'power2',
+              })
+              .add(() => that.headerToggleDom.classList.add('active'));
+          },
+
+          enter() {
+            if (that.about) {
+              that.about.addEvents();
+            } else {
+              that.about = new About(that);
+            }
+
+            return that.about.showAbout();
+          },
+        },
+        {
+          name: 'from-about-to-home',
+          from: {
+            namespace: ['about'],
+          },
+          to: {
+            namespace: ['home'],
+          },
+          leave() {
+            that.page = 'home';
+
+            that.about.removeEvents();
+
+            return that.about.hideAbout();
+          },
+
+          enter() {
+            that.lenis.start();
+            document.documentElement.style.setProperty(
+              '--main-color',
+              '#ffffff'
+            );
+
+            const tl = gsap.timeline();
+
+            return tl
+              .set(that.transitionPathDom, {
+                attr: { d: 'M 0 0 V 100 Q 50 100 100 100 V 0 z' },
+              })
+              .to(that.transitionPathDom, {
+                attr: { d: 'M 0 0 V 50 Q 50 0 100 50 V 0 z' },
+                duration: 0.3,
+                ease: 'power2.in',
+              })
+              .to(that.transitionPathDom, {
+                attr: { d: 'M 0 0 V 0 Q 50 0 100 0 V 0 z' },
+                duration: 0.8,
+                ease: 'power4',
+              })
+              .add(() => {
+                that.footer.showFooter();
+              }, 0.2)
+              .add(() => that.headerToggleDom.classList.remove('active'));
+          },
         },
       ],
     });
@@ -194,8 +318,8 @@ export default class Scene {
 
   onResize() {
     window.addEventListener('resize', () => {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
+      this.width = container.offsetWidth;
+      this.height = container.offsetHeight;
 
       this.camera.aspect = this.width / this.height;
       this.camera.fov =
@@ -214,11 +338,6 @@ export default class Scene {
   onScroll() {
     const progressBar = document.querySelector('.footer__progress__bar__line');
     this.lenis.on('scroll', (e) => {
-      if (this.page === 'work') {
-        barba.go('/');
-        this.page = 'home';
-      }
-
       for (const plane of this.planes) {
         this.velocity = e.velocity;
         plane.onScroll(e.scroll, e.velocity);
@@ -236,7 +355,6 @@ export default class Scene {
       plane.update();
     }
 
-    // Post processing
     this.composer.render();
 
     requestAnimationFrame(this.update.bind(this));

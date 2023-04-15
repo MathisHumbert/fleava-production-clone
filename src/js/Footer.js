@@ -1,6 +1,8 @@
 export default class Footer {
   constructor() {
     this.footerInfoDomm = document.querySelector('.footer__info');
+    this.footerScrollDom = document.querySelector('.footer__scroll__drag');
+    this.footerInfoDom = document.querySelector('.footer__info__base');
     this.footerProgressDom = document.querySelector(
       '.footer__progress__toggle'
     );
@@ -41,5 +43,15 @@ export default class Footer {
     this.footerInfoDomm.classList.remove('active');
 
     this.footerProgressDom.textContent = `00`;
+  }
+
+  hideFooter() {
+    this.footerScrollDom.classList.add('hide');
+    this.footerInfoDom.classList.add('hide');
+  }
+
+  showFooter() {
+    this.footerScrollDom.classList.remove('hide');
+    this.footerInfoDom.classList.remove('hide');
   }
 }

@@ -2,8 +2,18 @@ import Scene from './Scene';
 
 new Scene(
   document.getElementById('webgl'),
+  document.querySelector('.container'),
   document.getElementById('page__wrapper')
 );
 
-// show clode instead of about in work page
-// show scroll / esc to close instead of scroll / drag
+function isMobileOrTablet() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+}
+
+if (isMobileOrTablet()) {
+  // document.querySelector('.container')
+} else {
+  // do something for desktop users
+}

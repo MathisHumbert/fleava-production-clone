@@ -365,6 +365,11 @@ sass@^1.61.0:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
 
+split-type@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/split-type/-/split-type-0.3.3.tgz#5ed4503d96cddcccea1ca2dcae0bbc330ff3282e"
+  integrity sha512-gEA90DEHJhdT/5Da2gR7FPHgaGgivTN4PfZBtHKcl4quDLsE3x7tJlGTKEp4yyqpfi1wCaqeKE+s2UCqBRjJYA==
+
 supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"

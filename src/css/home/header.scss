@@ -17,7 +17,6 @@
   align-items: baseline;
   gap: 0.5vw;
   width: fit-content;
-  // border: 1px solid;
 }
 
 .header__logo svg {
@@ -59,6 +58,14 @@
   opacity: 0.5;
 }
 
+.about__link {
+  pointer-events: auto;
+}
+
+.header__toggle.active .about__link {
+  pointer-events: none;
+}
+
 .about__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
   transform: translateY(0);
@@ -71,6 +78,11 @@
 
 .close__link {
   position: absolute;
+  pointer-events: none;
+}
+
+.header__toggle.active .close__link {
+  pointer-events: auto;
 }
 
 .close__link .line__inner {

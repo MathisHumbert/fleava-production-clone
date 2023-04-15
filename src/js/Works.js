@@ -1,6 +1,6 @@
-export default class Video {
+export default class Works {
   constructor(scene) {
-    this.cursorDom = scene.curorDom;
+    this.cursorDom = scene.cursorDom;
     this.controlDom = document.querySelector('.video__control');
     this.cursorDom.classList.add('active');
 

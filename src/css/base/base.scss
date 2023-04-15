@@ -4,9 +4,9 @@
   box-sizing: border-box;
 }
 
-html.lenis {
-  height: auto;
-}
+// html.lenis {
+//   height: auto;
+// }
 
 .lenis.lenis-smooth {
   scroll-behavior: auto;
@@ -14,6 +14,10 @@ html.lenis {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+html {
+  height: 100vh;
 }
 
 body {
@@ -26,6 +30,15 @@ body {
   line-height: 1.2;
   font-family: 'Graphik';
   transition: background 1s ease, color 0.2s ease;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.container {
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  position: relative;
 }
 
 ::-webkit-scrollbar {

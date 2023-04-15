@@ -10,7 +10,7 @@ export default class Plane {
     this.imgDom = el.querySelector('img');
     this.bgData = el.dataset.bg;
     this.colorData = el.dataset.color;
-    this.cursorDom = scene.curorDom;
+    this.cursorDom = scene.cursorDom;
 
     this.scene = scene.scene;
     this.width = scene.width;
@@ -48,7 +48,6 @@ export default class Plane {
         uHover: { value: this.isFullScreen ? 1 : 0 },
         uVelo: { value: 0 },
       },
-      // wireframe: true,
       vertexShader: vertex,
       fragmentShader: fragment,
     });

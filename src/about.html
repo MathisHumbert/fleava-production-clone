@@ -41,9 +41,9 @@
           <span class="line__inner">House</span>
         </span>
       </h1>
-      <div class="header__toggle">
+      <div class="header__toggle active">
         <span class="header__toggle__bar">/</span>
-        <a href="/about" class="header__toggle__link about__link">
+        <a href="/about.html" class="header__toggle__link about__link">
           <span class="line">
             <span class="line__inner">About</span>
           </span>
@@ -258,12 +258,128 @@
           <span class="line__inner">Scroll / Drag</span>
         </span>
         <span class="line footer__scroll__close">
-          <span class="line__inner">Scroll / [esc] to close</span>
+          <span class="line__inner">[esc] to close</span>
         </span>
       </div>
     </footer>
+    <div class="transition">
+      <svg
+        class="transition__overlay"
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path
+          class="transition__overlay__path"
+          vector-effect="non-scaling-stroke"
+          d="M 0 100 V 0 Q 50 0 100 0 V 100 z"
+        />
+      </svg>
+    </div>
     <main data-barba="container" data-barba-namespace="about">
-      <div id="page__wrapper" data-page="about"></div>
+      <div id="page__wrapper" data-page="about">
+        <div class="about__wrapper">
+          <div class="about__info">
+            <h1 class="about__info__title">
+              <span class="line">
+                <span class="line__inner"> About us </span>
+              </span>
+            </h1>
+            <h2 class="about__info__text">
+              Fleava Films is a full—service production house based out of
+              Indonesia and Singapore that hosts a thriving roster of directors
+              working across a range of artistic disciplines.
+            </h2>
+          </div>
+          <div class="about__footer">
+            <div class="about__footer__left">
+              <a href="https://twitter.com/Mathis1Humbert" target="_blank">
+                <span class="line">
+                  <span class="line__inner">Get in touch</span>
+                </span>
+              </a>
+            </div>
+            <div class="about__footer__middle">
+              <div class="lines about__preprod">
+                <span class="line fade">
+                  <span class="line__inner">Pre—Production</span>
+                </span>
+                <span>&nbsp;</span>
+                <span class="line">
+                  <span class="line__inner">Production Strategy /</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner">Creative Writing /</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner">Storyboard / Talent</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner">Storyboard / Talent</span>
+                </span>
+              </div>
+              <div class="lines about__prod">
+                <span class="line fade">
+                  <span class="line__inner">Production</span>
+                </span>
+                <span>&nbsp;</span>
+                <span class="line">
+                  <span class="line__inner">Directing / Full-scale</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner">Production / Crew &</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner"
+                    >External Vendors / Logistics /</span
+                  >
+                </span>
+                <span class="line">
+                  <span class="line__inner">Location Scouting</span>
+                </span>
+              </div>
+              <div class="lines about__postprod">
+                <span class="line fade">
+                  <span class="line__inner">Post—Production</span>
+                </span>
+                <span>&nbsp;</span>
+                <span class="line">
+                  <span class="line__inner">Editing /</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner">Motion Graphic / Sound</span>
+                </span>
+                <span class="line">
+                  <span class="line__inner"
+                    >Production / Compositing / Color</span
+                  >
+                </span>
+                <span class="line">
+                  <span class="line__inner">Grading / Distribution</span>
+                </span>
+              </div>
+            </div>
+            <div class="about__footer__right">
+              <a href="https://www.youtube.com/@fleavafilms" target="_blank">
+                <span class="line">
+                  <span class="line__inner">Youtube</span>
+                </span>
+              </a>
+              <a href="https://www.instagram.com/fleava.films/" target="_blank">
+                <span class="line">
+                  <span class="line__inner">Instagram</span>
+                </span>
+              </a>
+              <a href="https://fleava.com" target="_blank">
+                <span class="line">
+                  <span class="line__inner">Fleava Agency</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <canvas id="webgl"></canvas>
     <script type="module" src="./js/app.js"></script>

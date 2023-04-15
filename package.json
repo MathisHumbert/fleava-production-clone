@@ -17,6 +17,7 @@
     "gsap": "^3.11.5",
     "include-media": "^2.0.0",
     "sass": "^1.61.0",
+    "split-type": "^0.3.3",
     "three": "^0.151.3",
     "vite-plugin-glsl": "^1.1.2"
   }
