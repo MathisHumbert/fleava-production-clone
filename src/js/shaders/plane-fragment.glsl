@@ -36,10 +36,11 @@ vec2 getUV(vec2 uv, vec2 textureSize, vec2 quadSize){
 
 void main(){
   vec2 correctUv = getUV(vUv, uTextureSize, vSize);
+
   vec4 texture = texture2D(uTexture, correctUv);
   vec3 color = texture.rgb;
 
-  float veloColor = min(abs(uVelo) / 150., 1.);
+  float veloColor = min(abs(uVelo) / 75., 1.);
 
   vec3 saturatedColor = adjustSaturation(color, -1. + min(uHover + veloColor, 1.));
 

@@ -4,6 +4,12 @@ import SplitType from 'split-type';
 export default class About {
   constructor(scene) {
     this.cursorDom = scene.cursorDom;
+
+    this.initDom();
+    this.addEvents();
+  }
+
+  initDom() {
     this.infoTitleDom = document.querySelector(
       '.about__info__title .line__inner'
     );
@@ -25,7 +31,6 @@ export default class About {
     );
 
     this.splitAboutText();
-    this.addEvents();
   }
 
   addEvents() {

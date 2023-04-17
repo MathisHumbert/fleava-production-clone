@@ -16,10 +16,10 @@ export default class Plane {
     this.width = scene.width;
     this.height = scene.height;
     this.texture = scene.textureLoader.load(this.imgDom.src);
-    this.scroll = scene.lenis.scroll;
     this.footer = scene.footer;
     this.index = index;
     this.isFullScreen = isFullScreen;
+    this.initScrolPos = scene.lenis.targetScroll;
 
     this.initPlane();
     this.addEvents();
@@ -31,7 +31,7 @@ export default class Plane {
   }
 
   initPlane() {
-    this.geometry = new THREE.PlaneGeometry(1, 1, 10, 10);
+    this.geometry = new THREE.PlaneGeometry(1, 1, 100, 100);
 
     this.material = new THREE.RawShaderMaterial({
       uniforms: {
@@ -42,7 +42,7 @@ export default class Plane {
             ? new THREE.Vector4(1, 1, 1, 1)
             : new THREE.Vector4(0, 0, 0, 0),
         },
-        uTextureSize: { value: new THREE.Vector2(0, 0) },
+        uTextureSize: { value: new THREE.Vector2(2500, 1556) },
         uQuadSize: { value: new THREE.Vector2(0, 0) },
         uProgress: { value: 0 },
         uHover: { value: this.isFullScreen ? 1 : 0 },
@@ -54,9 +54,11 @@ export default class Plane {
     this.material.depthTest = false;
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+
     if (this.isFullScreen) {
       this.mesh.renderOrder = 10;
     }
+
     this.scene.add(this.mesh);
 
     this.setBounds();
@@ -66,7 +68,7 @@ export default class Plane {
     const rect = this.imgDom.getBoundingClientRect();
 
     this.bounds = {
-      left: this.scroll + rect.left,
+      left: rect.left,
       top: rect.top,
       width: rect.width,
       height: rect.height,
@@ -74,25 +76,29 @@ export default class Plane {
 
     this.mesh.scale.set(this.bounds.width, this.bounds.height, 1);
 
-    this.mesh.position.x =
-      this.scroll + this.bounds.left - this.width / 2 + this.bounds.width / 2;
-    this.mesh.position.y =
-      -this.bounds.top + this.height / 2 - this.bounds.height / 2;
-
     this.material.uniforms.uQuadSize.value.x = this.bounds.width;
     this.material.uniforms.uQuadSize.value.y = this.bounds.height;
 
-    this.material.uniforms.uTextureSize.value.x = this.bounds.width;
-    this.material.uniforms.uTextureSize.value.y = this.bounds.height;
+    // this.material.uniforms.uTextureSize.value.x = this.bounds.width;
+    // this.material.uniforms.uTextureSize.value.y = this.bounds.height;
+  }
+
+  setPostion() {
+    const rect = this.imgDom.getBoundingClientRect();
+    this.bounds.left = rect.left;
+    this.bounds.top = rect.top;
+
+    this.updatePosition();
   }
 
   updatePosition() {
     this.mesh.position.x =
-      -this.scroll + this.bounds.left - this.width / 2 + this.bounds.width / 2;
+      this.bounds.left - this.width / 2 + this.bounds.width / 2;
+    this.mesh.position.y =
+      -this.bounds.top + this.height / 2 - this.bounds.height / 2;
   }
 
-  onScroll(scroll, velocity) {
-    this.scroll = scroll;
+  onScroll(velocity) {
     this.material.uniforms.uVelo.value = velocity;
   }
 
@@ -193,6 +199,6 @@ export default class Plane {
   }
 
   update() {
-    this.updatePosition();
+    this.setPostion();
   }
 }

@@ -4,9 +4,9 @@
   box-sizing: border-box;
 }
 
-// html.lenis {
-//   height: auto;
-// }
+html.lenis {
+  height: auto;
+}
 
 .lenis.lenis-smooth {
   scroll-behavior: auto;
@@ -23,15 +23,20 @@ html {
 body {
   background: $bg-color;
   color: $main-color;
-  font-size: 0.75vw;
+  font-size: 13px;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.05vw;
   line-height: 1.2;
   font-family: 'Graphik';
   transition: background 1s ease, color 0.2s ease;
-  height: 100vh;
-  max-height: 100vh;
+  height: auto;
+}
+
+@media screen and (min-width: 700px) {
+  body {
+    font-size: 0.75vw;
+  }
 }
 
 .container {

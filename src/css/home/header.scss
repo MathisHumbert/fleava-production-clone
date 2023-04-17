@@ -1,27 +1,49 @@
 .header {
   position: fixed;
-  top: 0;
+  top: 40px;
   left: 0;
   width: 100%;
   display: flex;
-  padding: 3vw 5vw 0;
+  padding: 0 5vw;
   z-index: 101;
+}
+
+@media screen and (min-width: 700px) {
+  .header {
+    top: 0;
+    padding: 3vw 5vw 0;
+  }
 }
 
 .header__logo {
   width: 25%;
+  display: flex;
+  align-items: baseline;
 }
 
 .header__logo__link {
   display: flex;
   align-items: baseline;
-  gap: 0.5vw;
-  width: fit-content;
+  gap: 6px;
+  width: 114px;
+}
+
+@media screen and (min-width: 700px) {
+  .header__logo__link {
+    gap: 0.5vw;
+    width: fit-content;
+  }
 }
 
 .header__logo svg {
   width: auto;
-  height: 1.15vw;
+  height: 18px;
+}
+
+@media screen and (min-width: 700px) {
+  .header__logo svg {
+    height: 1.15vw;
+  }
 }
 
 .header__logo svg path {
@@ -31,11 +53,17 @@
 .header__logo p {
   position: relative;
   font-weight: 300;
-  font-size: 1.5vw;
+  font-size: 20px;
   letter-spacing: -0.05vw;
   text-transform: none;
-  opacity: 0.5;
-  line-height: 1;
+  opacity: 0.8;
+}
+
+@media screen and (min-width: 700px) {
+  .header__logo p {
+    font-size: 1.5vw;
+    opacity: 0.5;
+  }
 }
 
 .header__title {
@@ -43,6 +71,13 @@
   font-size: 0.75vw;
   font-weight: 400;
   margin: 0.67em 0;
+  display: none;
+}
+
+@media screen and (min-width: 700px) {
+  .header__title {
+    display: block;
+  }
 }
 
 .header__toggle {
@@ -50,12 +85,24 @@
   align-items: center;
   justify-content: flex-end;
   gap: 3vw;
-  width: 22.5%;
+  width: 75%;
   text-align: right;
 }
 
+@media screen and (min-width: 700px) {
+  .header__toggle {
+    width: 22.5%;
+  }
+}
+
 .header__toggle__bar {
-  opacity: 0.5;
+  opacity: 0_;
+}
+
+@media screen and (min-width: 700px) {
+  .header__toggle__bar {
+    opacity: 0.5;
+  }
 }
 
 .about__link {
@@ -73,7 +120,7 @@
 
 .header__toggle.active .about__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transform: translateY(-100%);
+  transform: translateY(-110%);
 }
 
 .close__link {
@@ -87,7 +134,7 @@
 
 .close__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
-  transform: translateY(100%);
+  transform: translateY(110%);
 }
 
 .header__toggle.active .close__link .line__inner {

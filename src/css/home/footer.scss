@@ -1,19 +1,32 @@
 .footer {
   position: fixed;
-  bottom: 0;
+  bottom: 40px;
   left: 0;
   width: 100vw;
   height: fit-content;
   display: flex;
-  padding: 0 5vw 3vw;
+  padding: 0 5vw;
   pointer-events: none;
+}
+
+@media screen and (min-width: 700px) {
+  .footer {
+    bottom: 0;
+    padding: 0 5vw 3vw;
+  }
 }
 
 .footer__progress {
   width: 25%;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: baseline;
+}
+
+@media screen and (min-width: 700px) {
+  .footer__progress {
+    display: flex;
+  }
 }
 
 .footer__progress__num {
@@ -64,12 +77,12 @@
 
 .footer__info__base.hide .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transform: translateY(-100%);
+  transform: translateY(-110%);
 }
 
 .footer__info.active .footer__info__base .line__inner {
   transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
-  transform: translateY(-100%);
+  transform: translateY(-110%);
 }
 
 .footer__info__detail {
@@ -88,12 +101,22 @@
   margin-right: 5vw;
 }
 
+.footer__info__detail .lines:nth-child(n + 3) {
+  display: none;
+}
+
+@media screen and (min-width: 700px) {
+  .footer__info__detail .lines:nth-child(n + 3) {
+    display: block;
+  }
+}
+
 .footer__info__detail .fade .line {
   margin-right: 2vw;
 }
 
 .footer__info__detail .line__inner {
-  transform: translateY(100%);
+  transform: translateY(110%);
   transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
 }
 
@@ -106,6 +129,13 @@
   width: 22.5%;
   text-align: right;
   position: relative;
+  display: none;
+}
+
+@media screen and (min-width: 700px) {
+  .footer__scroll {
+    display: block;
+  }
 }
 
 .footer__scroll__drag .line__inner {
@@ -115,12 +145,12 @@
 
 .footer__scroll__drag.hide .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transform: translateY(-100%);
+  transform: translateY(-110%);
 }
 
 .footer__scroll.active .footer__scroll__drag .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transform: translateY(-100%);
+  transform: translateY(-110%);
 }
 
 .footer__scroll__close {
@@ -131,7 +161,7 @@
 
 .footer__scroll__close .line__inner {
   transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
-  transform: translateY(100%);
+  transform: translateY(110%);
 }
 
 .footer__scroll.active .footer__scroll__close .line__inner {

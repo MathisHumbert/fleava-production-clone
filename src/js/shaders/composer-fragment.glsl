@@ -6,7 +6,7 @@ varying vec2 vUv;
 void main(){
   vec2 newUv = vUv;  
 
-  float veloSpeed = min(abs(uVelo) / 150., 1.);
+  float veloSpeed = min(abs(uVelo) / 40., 1.);
 
   float distortion = ((1. + sin(vUv.x * 5.) ) * 0.5) * 0.25 * veloSpeed * 2.5;
 

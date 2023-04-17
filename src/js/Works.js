@@ -1,13 +1,14 @@
 export default class Works {
   constructor(scene) {
     this.cursorDom = scene.cursorDom;
-    this.controlDom = document.querySelector('.video__control');
     this.cursorDom.classList.add('active');
 
     this.addEvents();
   }
 
   addEvents() {
+    this.controlDom = document.querySelector('.video__control');
+
     this.controlDom.addEventListener(
       'mouseenter',
       this.onControlEnter.bind(this)

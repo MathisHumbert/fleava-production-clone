@@ -15,7 +15,6 @@
     "@barba/core": "^2.9.7",
     "@studio-freight/lenis": "^1.0.6",
     "gsap": "^3.11.5",
-    "include-media": "^2.0.0",
     "sass": "^1.61.0",
     "split-type": "^0.3.3",
     "three": "^0.151.3",

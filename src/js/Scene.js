@@ -1,9 +1,11 @@
 import * as THREE from 'three';
-import { gsap } from 'gsap';
-import Lenis from '@studio-freight/lenis';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from '@studio-freight/lenis';
+
 import barba from '@barba/core';
 
 import fragment from './shaders/composer-fragment.glsl';
@@ -15,13 +17,15 @@ import Header from './Header';
 import Works from './Works';
 import About from './About';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default class Scene {
   constructor(canvas, pageWrapper) {
     this.canvas = canvas;
     this.pageWrapper = pageWrapper;
     this.page = pageWrapper.dataset.page;
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    this.width = document.documentElement.offsetWidth;
+    this.height = document.documentElement.offsetHeight;
     this.velocity = 0;
     this.isFullScreen = false;
 
@@ -85,8 +89,7 @@ export default class Scene {
 
   initScroll() {
     const lenis = new Lenis({
-      orientation: 'horizontal',
-      gestureOrientation: 'both',
+      wheelMultiplier: 0.35,
     });
 
     function raf(time) {
@@ -102,21 +105,24 @@ export default class Scene {
 
     this.lenis = lenis;
 
-    // const slider = document.querySelector('.slider__carousel');
+    const carouselDom = document.querySelector('.slider__carousel');
+    const sliderDom = document.querySelector('.slider');
+    const sliderContainerDom = document.querySelector('.slider__container');
+    const progressBar = document.querySelector('.footer__progress__bar__line');
 
-    // console.log(slider.offsetWidth);
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sliderDom,
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
 
-    // gsap.to('.slider__carousel', {
-    //   ease: 'none',
-    //   x: () => `-${slider.offsetWidth - window.innerWidth}`,
-    //   scrollTrigger: {
-    //     trigger: '.slider__container',
-    //     pin: true,
-    //     scrub: true,
-    //     invalidateOnRefresh: true,
-    //     markers: true,
-    //   },
-    // });
+    tl.to(sliderContainerDom, {
+      x: () => `-${carouselDom.offsetWidth - this.width + this.width * 0.275}`,
+      ease: 'none',
+    }).to(progressBar, { scaleX: 1 }, 0);
   }
 
   initPlanes() {
@@ -180,7 +186,7 @@ export default class Scene {
           },
           enter() {
             if (that.works) {
-              that.works.removeEvents();
+              that.works.addEvents();
             } else {
               that.works = new Works(that);
             }
@@ -255,6 +261,7 @@ export default class Scene {
           enter() {
             if (that.about) {
               that.about.addEvents();
+              that.about.initDom();
             } else {
               that.about = new About(that);
             }
@@ -318,8 +325,8 @@ export default class Scene {
 
   onResize() {
     window.addEventListener('resize', () => {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
+      this.width = document.documentElement.offsetWidth;
+      this.height = document.documentElement.offsetHeight;
 
       this.camera.aspect = this.width / this.height;
       this.camera.fov =
@@ -336,14 +343,10 @@ export default class Scene {
   }
 
   onScroll() {
-    const progressBar = document.querySelector('.footer__progress__bar__line');
     this.lenis.on('scroll', (e) => {
       for (const plane of this.planes) {
         this.velocity = e.velocity;
-        plane.onScroll(e.scroll, e.velocity);
-        gsap.to(progressBar, {
-          scaleX: e.scroll / (e.dimensions.scrollWidth - this.width),
-        });
+        plane.onScroll(e.velocity);
       }
     });
   }

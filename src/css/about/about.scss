@@ -1,58 +1,122 @@
 .about__wrapper {
   width: 100vw;
   height: 100vh;
-  padding: 15vw 0 3vw;
+  padding: 120px 0 140px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
+@media screen and (min-width: 700px) {
+  .about__wrapper {
+    padding: 15vw 0 3vw;
+  }
+}
+
 .about__info {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+
   padding: 0 5vw;
   width: 100%;
+  margin-top: 20px;
+}
+
+@media screen and (min-width: 700px) {
+  .about__info {
+    margin-top: 0;
+    flex-direction: row;
+    gap: 0;
+  }
 }
 
 .about__info__title {
   width: 25%;
-  font-size: 0.75vw;
+  font-size: 13px;
   font-weight: 400;
   margin: 0.67em 0;
 }
 
+@media screen and (min-width: 700px) {
+  .about__info__title {
+    font-size: 0.75vw;
+  }
+}
+
 .about__info__text {
-  width: 52.5%;
+  width: 100%;
   font-weight: 300;
-  font-size: 2vw;
+  font-size: 18px;
   line-height: 1.4;
   text-transform: none;
+}
+
+@media screen and (min-width: 700px) {
+  .about__info__text {
+    width: 52.5%;
+    font-size: 2vw;
+  }
 }
 
 .about__footer {
   width: 100vw;
   padding: 5vw 5vw 0;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+@media screen and (min-width: 700px) {
+  .about__footer {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0;
+  }
 }
 
 .about__footer a {
   text-decoration: underline;
   line-height: 2;
+  display: block;
+  width: fit-content;
 }
 
 .about__footer__left {
-  width: 25%;
+  width: 100%;
+}
+
+@media screen and (min-width: 700px) {
+  .about__footer__left {
+    width: 25%;
+  }
 }
 
 .about__footer__middle {
   width: 52.5%;
-  display: flex;
+  display: none;
   align-items: flex-end;
   gap: 3vw;
   font-size: 90%;
 }
 
+@media screen and (min-width: 700px) {
+  .about__footer__middle {
+    display: flex;
+  }
+}
+
 .about__footer__right {
-  width: 22.5%;
-  text-align: right;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media screen and (min-width: 700px) {
+  .about__footer__right {
+    width: 22.5%;
+    align-items: flex-end;
+  }
 }
