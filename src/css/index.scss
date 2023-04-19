@@ -5,12 +5,12 @@
 @import './base/fonts';
 @import './base/base';
 
-@import './home/header';
-@import './home/slider';
-@import './home/footer';
-@import './work/video';
-@import './about/about';
+@import './pages/home';
+@import './pages/works';
+@import './pages/about';
 
+@import './layout/header';
+@import './layout/footer';
 @import './layout/cursor';
 @import './layout/wrapper';
 @import './layout/transition';

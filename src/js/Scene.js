@@ -16,6 +16,8 @@ import Cursor from './Cursor';
 import Header from './Header';
 import Works from './Works';
 import About from './About';
+import { checkMobileOrTablet } from './utils';
+import Loader from './Loader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,8 +28,11 @@ export default class Scene {
     this.page = pageWrapper.dataset.page;
     this.width = document.documentElement.offsetWidth;
     this.height = document.documentElement.offsetHeight;
+    this.scroll = 0;
+    this.currentScroll = 0;
     this.velocity = 0;
     this.isFullScreen = false;
+    this.isMobileOrTablet = checkMobileOrTablet();
 
     this.cursorDom = document.querySelector('.cursor');
     this.footerScrollDom = document.querySelector('.footer__scroll');
@@ -36,13 +41,13 @@ export default class Scene {
       '.transition__overlay__path'
     );
 
-    this.start();
-  }
+    this.loader = new Loader(this.start.bind(this));
 
-  start() {
+    this.initThree();
+    this.initScroll();
     this.footer = new Footer();
     this.header = new Header(this.cursorDom);
-    this.cursor = new Cursor();
+    this.cursor = new Cursor(this.isMobileOrTablet);
 
     if (this.page === 'work') {
       this.works = new Works(this);
@@ -51,12 +56,12 @@ export default class Scene {
     if (this.page === 'about') {
       this.about = new About(this);
     }
+  }
 
-    this.initThree();
-    this.initScroll();
+  start() {
+    this.initBarbara();
     this.initPlanes();
     this.initComposerPass();
-    this.initBarbara();
 
     this.addEvents();
     this.update();
@@ -83,8 +88,6 @@ export default class Scene {
     });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    this.textureLoader = new THREE.TextureLoader();
   }
 
   initScroll() {
@@ -99,9 +102,7 @@ export default class Scene {
 
     requestAnimationFrame(raf);
 
-    if (this.page === 'about' || this.page === 'work') {
-      lenis.stop();
-    }
+    lenis.stop();
 
     this.lenis = lenis;
 
@@ -127,14 +128,17 @@ export default class Scene {
 
   initPlanes() {
     const slides = [...document.querySelectorAll('.slide')];
+
     this.planes = slides.map((el, index) => {
       let isFullScreen = false;
+
       if (
         this.page === 'work' &&
         Number(this.pageWrapper.dataset.index) === index
       ) {
         isFullScreen = true;
       }
+
       return new Plane(el, this, index, isFullScreen);
     });
   }
@@ -165,6 +169,23 @@ export default class Scene {
     barba.init({
       preventRunning: true,
       transitions: [
+        {
+          once() {
+            console.log('first loading');
+
+            if (that.page === 'home') {
+              that.lenis.start();
+            }
+
+            for (const plane of that.planes) {
+              plane.initOpacity();
+            }
+
+            that.header.start();
+            console.log(document.documentElement);
+            document.documentElement.classList.remove('loading');
+          },
+        },
         {
           name: 'from-home-to-work',
           from: {
@@ -212,10 +233,18 @@ export default class Scene {
             const planeIndex = Number(data.current.container.dataset.index);
             return that.planes[planeIndex].onUnZoom(
               that.footerScrollDom,
-              that.headerToggleDom
+              that.headerToggleDom,
+              that.isMobileOrTablet
             );
           },
           enter() {
+            if (that.isMobileOrTablet) {
+              document.documentElement.style.setProperty(
+                '--main-color',
+                '#ffffff'
+              );
+            }
+
             that.lenis.start();
           },
         },
@@ -336,6 +365,10 @@ export default class Scene {
       this.renderer.setSize(this.width, this.height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+      this.isMobileOrTablet = checkMobileOrTablet();
+
+      this.cursor.onResize(this.isMobileOrTablet);
+
       for (const plane of this.planes) {
         plane.onResize(this.width, this.height);
       }
@@ -344,14 +377,24 @@ export default class Scene {
 
   onScroll() {
     this.lenis.on('scroll', (e) => {
-      for (const plane of this.planes) {
+      if (!this.isMobileOrTablet) {
         this.velocity = e.velocity;
-        plane.onScroll(e.velocity);
+      } else {
+        this.scroll = e.scroll;
+      }
+
+      for (const plane of this.planes) {
+        plane.onScroll(this.velocity);
       }
     });
   }
 
   update() {
+    if (this.isMobileOrTablet) {
+      this.velocity = Math.min(Math.abs(this.currentScroll - this.scroll), 15);
+      this.currentScroll = this.scroll;
+    }
+
     this.customPass.uniforms.uVelo.value = this.velocity;
 
     for (const plane of this.planes) {

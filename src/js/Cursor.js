@@ -1,7 +1,9 @@
 import { gsap } from 'gsap';
 
+import { lerp } from './utils';
+
 export default class Cursor {
-  constructor() {
+  constructor(isMobileOrTablet) {
     this.cursor = document.querySelector('.cursor');
     this.cursor.style.opacity = 0;
 
@@ -12,7 +14,9 @@ export default class Cursor {
       ty: { previous: 0, current: 0, amt: 0.2 },
     };
 
-    this.lerp = (a, b, n) => (1 - n) * a + n * b;
+    if (isMobileOrTablet) {
+      this.cursor.classList.add('hide');
+    }
 
     this.addEvents();
   }
@@ -45,12 +49,20 @@ export default class Cursor {
     });
   }
 
+  onResize(isMobileOrTablet) {
+    if (isMobileOrTablet) {
+      this.cursor.classList.add('hide');
+    } else {
+      this.cursor.classList.remove('hide');
+    }
+  }
+
   render() {
     this.renderedStyles.tx.current = this.mouse.x - this.bounds.width / 2;
     this.renderedStyles.ty.current = this.mouse.y - this.bounds.height / 2;
 
     for (const key in this.renderedStyles) {
-      this.renderedStyles[key].previous = this.lerp(
+      this.renderedStyles[key].previous = lerp(
         this.renderedStyles[key].previous,
         this.renderedStyles[key].current,
         this.renderedStyles[key].amt

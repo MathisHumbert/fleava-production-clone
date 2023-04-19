@@ -5,6 +5,6 @@ new Scene(
   document.getElementById('page__wrapper')
 );
 
-// check for mobile
-// if mobile custom scroll velocity + toggle color on transition + hide cursor
-// create utils, add wrapp lines and more
+// animate footer after first load
+// animate about after first load
+// animate works after first load

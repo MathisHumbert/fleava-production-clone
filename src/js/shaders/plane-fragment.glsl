@@ -3,6 +3,7 @@ precision mediump float;
 uniform sampler2D uTexture;
 uniform float uHover;
 uniform float uVelo;
+uniform float uOpacity;
 uniform vec2 uTextureSize;
 
 varying vec2 vUv;
@@ -44,6 +45,5 @@ void main(){
 
   vec3 saturatedColor = adjustSaturation(color, -1. + min(uHover + veloColor, 1.));
 
-  gl_FragColor = vec4(1., 1., 1., 1.);
-  gl_FragColor = vec4(saturatedColor, texture.a);
+  gl_FragColor = vec4(saturatedColor, texture.a) * uOpacity;
 }

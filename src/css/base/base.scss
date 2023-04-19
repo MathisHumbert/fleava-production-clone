@@ -30,7 +30,8 @@ body {
   line-height: 1.2;
   font-family: 'Graphik';
   transition: background 1s ease, color 0.2s ease;
-  height: auto;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 @media screen and (min-width: 700px) {

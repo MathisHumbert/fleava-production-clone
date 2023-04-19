@@ -15,7 +15,7 @@ export default class Plane {
     this.scene = scene.scene;
     this.width = scene.width;
     this.height = scene.height;
-    this.texture = scene.textureLoader.load(this.imgDom.src);
+    this.texture = scene.loader.loadedTextures[this.imgDom.getAttribute('src')];
     this.footer = scene.footer;
     this.index = index;
     this.isFullScreen = isFullScreen;
@@ -47,6 +47,7 @@ export default class Plane {
         uProgress: { value: 0 },
         uHover: { value: this.isFullScreen ? 1 : 0 },
         uVelo: { value: 0 },
+        uOpacity: { value: 0 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -64,7 +65,15 @@ export default class Plane {
     this.setBounds();
   }
 
-  setBounds() {
+  initOpacity() {
+    gsap.to(this.material.uniforms.uOpacity, {
+      value: 1,
+      duration: 2,
+      ease: 'power2.out',
+    });
+  }
+
+  getBounds() {
     const rect = this.imgDom.getBoundingClientRect();
 
     this.bounds = {
@@ -73,20 +82,21 @@ export default class Plane {
       width: rect.width,
       height: rect.height,
     };
+  }
+
+  setBounds() {
+    this.getBounds();
 
     this.mesh.scale.set(this.bounds.width, this.bounds.height, 1);
 
-    this.material.uniforms.uQuadSize.value.x = this.bounds.width;
-    this.material.uniforms.uQuadSize.value.y = this.bounds.height;
-
-    // this.material.uniforms.uTextureSize.value.x = this.bounds.width;
-    // this.material.uniforms.uTextureSize.value.y = this.bounds.height;
+    this.material.uniforms.uQuadSize.value.set(
+      this.bounds.width,
+      this.bounds.height
+    );
   }
 
   setPostion() {
-    const rect = this.imgDom.getBoundingClientRect();
-    this.bounds.left = rect.left;
-    this.bounds.top = rect.top;
+    this.getBounds();
 
     this.updatePosition();
   }
@@ -106,8 +116,7 @@ export default class Plane {
     this.width = width;
     this.height = height;
 
-    this.material.uniforms.uResolution.value.x = this.width;
-    this.material.uniforms.uResolution.value.y = this.height;
+    this.material.uniforms.uResolution.value.set(this.width, this.height);
 
     this.setBounds();
   }
@@ -177,7 +186,7 @@ export default class Plane {
       }, 0.2);
   }
 
-  onUnZoom(footerDom, headerDom) {
+  onUnZoom(footerDom, headerDom, isMobileOrTablet) {
     this.timeline = gsap.timeline({
       defaults: { ease: 'power2.out' },
       onComplete: () => {
@@ -192,9 +201,13 @@ export default class Plane {
         y: 0,
       })
       .to(this.material.uniforms.uCorners.value, { z: 0, w: 0 }, 0.1)
+      .to(this.material.uniforms.uHover, { value: 0 }, 0)
       .add(() => {
         headerDom.classList.remove('active');
         footerDom.classList.remove('active');
+        if (isMobileOrTablet) {
+          this.footer.hideDetail();
+        }
       }, 0.2);
   }
 

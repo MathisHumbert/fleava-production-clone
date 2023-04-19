@@ -3,7 +3,9 @@ export default class Header {
     this.cursorDom = cursor;
     this.logoDom = document.querySelector('.header__logo__link');
     this.linksDom = document.querySelectorAll('.header__toggle__link');
+  }
 
+  start() {
     this.logoDom.addEventListener('mouseenter', this.onMouseEnter.bind(this));
     this.logoDom.addEventListener('mouseleave', this.onMouseLeave.bind(this));
 

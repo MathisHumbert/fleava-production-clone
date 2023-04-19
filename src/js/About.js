@@ -1,6 +1,8 @@
 import { gsap } from 'gsap';
 import SplitType from 'split-type';
 
+import { wrapLines } from './utils';
+
 export default class About {
   constructor(scene) {
     this.cursorDom = scene.cursorDom;
@@ -49,6 +51,8 @@ export default class About {
 
       link.addEventListener('mouseleave', this.onMouseLeave.bind(this));
     }
+
+    window.addEventListener('resize', this.onResize.bind(this));
   }
 
   removeEvents() {
@@ -67,6 +71,8 @@ export default class About {
 
       link.removeEventListener('mouseleave', this.onMouseLeave.bind(this));
     }
+
+    window.removeEventListener('resize', this.onResize.bind(this));
   }
 
   showAbout() {
@@ -126,14 +132,20 @@ export default class About {
   }
 
   splitAboutText() {
-    const textLine = new SplitType(this.infoTextDom, {
-      types: 'lines',
-      lineClass: 'line',
-    });
-
-    this.infoTextLineDom = new SplitType(textLine.lines, {
+    this.infoTextLineDom = new SplitType(this.infoTextDom, {
       types: 'lines',
       lineClass: 'line__inner',
     });
+
+    wrapLines(this.infoTextLineDom.lines, 'span', 'line');
+  }
+
+  onResize() {
+    console.log('passed');
+    this.infoTextLineDom.split();
+
+    wrapLines(this.infoTextLineDom.lines, 'span', 'line');
+
+    this.splitAboutText();
   }
 }

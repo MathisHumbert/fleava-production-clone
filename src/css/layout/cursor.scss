@@ -9,6 +9,11 @@
   z-index: 5000;
   mix-blend-mode: difference;
   transition: top 0.35s ease;
+  font-size: 0.75vw;
+}
+
+.cursor.hide {
+  display: none;
 }
 
 .cursor.play,
