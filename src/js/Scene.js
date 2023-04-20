@@ -170,19 +170,45 @@ export default class Scene {
       preventRunning: true,
       transitions: [
         {
-          once() {
-            console.log('first loading');
-
+          once(data) {
             if (that.page === 'home') {
               that.lenis.start();
+
+              that.planes.forEach((plane, index) => {
+                plane.initOpacity(index);
+              });
             }
 
-            for (const plane of that.planes) {
-              plane.initOpacity();
+            if (that.page === 'work') {
+              const plane =
+                that.planes[Number(data.next.container.dataset.index)];
+              const carouselDom = document.querySelector('.slider__carousel');
+
+              that.lenis.start();
+              that.lenis.scrollTo(
+                plane.bounds.left *
+                  (that.lenis.dimensions.height /
+                    (carouselDom.offsetWidth - that.width / 2)),
+                { immediate: true }
+              );
+              that.lenis.stop();
+
+              plane.initOpacity(0);
+
+              that.planes.forEach((plane, index) => {
+                plane.initOpacity(index);
+              });
+            }
+
+            if (that.page === 'about') {
+              that.planes.forEach((plane, index) => {
+                plane.initOpacity(index);
+              });
+
+              that.about.showAbout();
             }
 
             that.header.start();
-            console.log(document.documentElement);
             document.documentElement.classList.remove('loading');
           },
         },

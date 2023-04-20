@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="--main-color: #d6cbb8">
+<html lang="en" style="--main-color: #d6cbb8" class="loading">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../vite.svg" />
@@ -43,7 +43,7 @@
       </h1>
       <div class="header__toggle active">
         <span class="header__toggle__bar">/</span>
-        <a href="/about" class="header__toggle__link about__link">
+        <a href="/about.html" class="header__toggle__link about__link">
           <span class="line">
             <span class="line__inner">About</span>
           </span>
@@ -263,6 +263,21 @@
         </span>
       </div>
     </footer>
+    <div class="transition">
+      <svg
+        class="transition__overlay"
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path
+          class="transition__overlay__path"
+          vector-effect="non-scaling-stroke"
+          d="M 0 100 V 100 Q 50 100 100 100 V 100 z"
+        />
+      </svg>
+    </div>
     <main data-barba="container" data-barba-namespace="work" data-index="6">
       <div
         id="page__wrapper"

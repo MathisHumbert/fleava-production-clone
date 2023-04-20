@@ -79,31 +79,41 @@ export default class About {
     const tl = gsap.timeline();
 
     return tl
-      .fromTo(this.infoTitleDom, { yPercent: 100 }, { yPercent: 0 })
-      .fromTo(this.infoTextLineDom.lines, { yPercent: 100 }, { yPercent: 0 }, 0)
-      .fromTo(this.footerLeftDom, { yPercent: 100 }, { yPercent: 0 }, 0.1)
+      .fromTo(this.infoTitleDom, { yPercent: 100 }, { yPercent: 0, opacity: 1 })
+      .fromTo(
+        this.infoTextLineDom.lines,
+        { yPercent: 100 },
+        { yPercent: 0, opacity: 1 },
+        0
+      )
+      .fromTo(
+        this.footerLeftDom,
+        { yPercent: 100 },
+        { yPercent: 0, opacity: 1 },
+        0.1
+      )
       .fromTo(
         this.footerMiddlePreProdDom,
         { yPercent: 100 },
-        { yPercent: 0, stagger: 0.05 },
+        { yPercent: 0, opacity: 1, stagger: 0.05 },
         0.1
       )
       .fromTo(
         this.footerMiddleProdDom,
         { yPercent: 100 },
-        { yPercent: 0, stagger: 0.05 },
+        { yPercent: 0, opacity: 1, stagger: 0.05 },
         0.2
       )
       .fromTo(
         this.footerMiddlePostProdDom,
         { yPercent: 100 },
-        { yPercent: 0, stagger: 0.05 },
+        { yPercent: 0, opacity: 1, stagger: 0.05 },
         0.3
       )
       .fromTo(
         this.footerRightLinksDom,
         { yPercent: 100 },
-        { yPercent: 0, stagger: 0.05 },
+        { yPercent: 0, opacity: 1, stagger: 0.05 },
         0.5
       );
   }
@@ -141,7 +151,6 @@ export default class About {
   }
 
   onResize() {
-    console.log('passed');
     this.infoTextLineDom.split();
 
     wrapLines(this.infoTextLineDom.lines, 'span', 'line');

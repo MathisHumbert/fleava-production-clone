@@ -45,7 +45,6 @@ export default class Loader {
     );
 
     Promise.all([fontGraphik, preloadImages, loadTextures]).then(() => {
-      console.log('ready');
       start();
     });
   }

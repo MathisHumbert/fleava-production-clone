@@ -13,6 +13,10 @@
   }
 }
 
+.about__wrapper .line__inner {
+  opacity: 0;
+}
+
 .about__info {
   display: flex;
   flex-direction: column;
@@ -50,6 +54,11 @@
   font-size: 18px;
   line-height: 1.4;
   text-transform: none;
+  opacity: 1;
+}
+
+.loading .about__info__text {
+  opacity: 0;
 }
 
 @media screen and (min-width: 700px) {

@@ -65,10 +65,11 @@ export default class Plane {
     this.setBounds();
   }
 
-  initOpacity() {
+  initOpacity(index) {
     gsap.to(this.material.uniforms.uOpacity, {
       value: 1,
       duration: 2,
+      delay: index * 0.25,
       ease: 'power2.out',
     });
   }
