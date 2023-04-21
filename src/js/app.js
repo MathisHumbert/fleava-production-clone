@@ -2,6 +2,8 @@ import FontFaceObserver from 'fontfaceobserver';
 import imagesLoaded from 'imagesloaded';
 import * as THREE from 'three';
 
+import '../css/index.scss';
+
 import Scene from './Scene';
 
 const fontGraphik = new Promise((resolve) => {
