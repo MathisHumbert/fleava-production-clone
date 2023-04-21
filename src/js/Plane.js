@@ -15,9 +15,7 @@ export default class Plane {
     this.scene = scene.scene;
     this.width = scene.width;
     this.height = scene.height;
-    // this.texture = scene.loader.loadedTextures[this.imgDom.getAttribute('src')];
-    this.texture = scene.textureLoader.load(this.imgDom.getAttribute('src'));
-    console.log(this.texture);
+    this.texture = scene.loadedTextures[this.imgDom.getAttribute('src')];
     this.footer = scene.footer;
     this.index = index;
     this.isFullScreen = isFullScreen;

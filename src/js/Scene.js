@@ -17,18 +17,17 @@ import Header from './Header';
 import Works from './Works';
 import About from './About';
 import { checkMobileOrTablet } from './utils';
-import Loader from './Loader';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default class Scene {
-  constructor(canvas, pageWrapper) {
+  constructor(canvas, pageWrapper, loadedTextures) {
     this.canvas = canvas;
     this.pageWrapper = pageWrapper;
+    this.loadedTextures = loadedTextures;
     this.page = pageWrapper.dataset.page;
     this.width = document.documentElement.offsetWidth;
     this.height = document.documentElement.offsetHeight;
-    this.textureLoader = new THREE.TextureLoader();
     this.scroll = 0;
     this.currentScroll = 0;
     this.velocity = 0;
@@ -42,17 +41,12 @@ export default class Scene {
       '.transition__overlay__path'
     );
 
-    // this.loader = new Loader(this.start.bind(this));
-
-    console.log('init app');
-
-    this.initThree();
-    this.initScroll();
-
     this.start();
   }
 
   start() {
+    this.initThree();
+    this.initScroll();
     this.footer = new Footer();
     this.header = new Header(this.cursorDom);
     this.cursor = new Cursor(this.isMobileOrTablet);
