@@ -28,6 +28,7 @@ export default class Scene {
     this.page = pageWrapper.dataset.page;
     this.width = document.documentElement.offsetWidth;
     this.height = document.documentElement.offsetHeight;
+    this.textureLoader = new THREE.TextureLoader();
     this.scroll = 0;
     this.currentScroll = 0;
     this.velocity = 0;
@@ -41,10 +42,17 @@ export default class Scene {
       '.transition__overlay__path'
     );
 
-    this.loader = new Loader(this.start.bind(this));
+    // this.loader = new Loader(this.start.bind(this));
+
+    console.log('init app');
 
     this.initThree();
     this.initScroll();
+
+    this.start();
+  }
+
+  start() {
     this.footer = new Footer();
     this.header = new Header(this.cursorDom);
     this.cursor = new Cursor(this.isMobileOrTablet);
@@ -56,9 +64,7 @@ export default class Scene {
     if (this.page === 'about') {
       this.about = new About(this);
     }
-  }
 
-  start() {
     this.initBarbara();
     this.initPlanes();
     this.initComposerPass();
@@ -102,7 +108,9 @@ export default class Scene {
 
     requestAnimationFrame(raf);
 
-    lenis.stop();
+    if (this.page === 'about' || this.page === 'work') {
+      lenis.stop();
+    }
 
     this.lenis = lenis;
 
@@ -170,47 +178,39 @@ export default class Scene {
       preventRunning: true,
       transitions: [
         {
-          once(data) {
-            if (that.page === 'home') {
-              that.lenis.start();
-
-              that.planes.forEach((plane, index) => {
-                plane.initOpacity(index);
-              });
-            }
-
-            if (that.page === 'work') {
-              const plane =
-                that.planes[Number(data.next.container.dataset.index)];
-              const carouselDom = document.querySelector('.slider__carousel');
-
-              that.lenis.start();
-              that.lenis.scrollTo(
-                plane.bounds.left *
-                  (that.lenis.dimensions.height /
-                    (carouselDom.offsetWidth - that.width / 2)),
-                { immediate: true }
-              );
-              that.lenis.stop();
-
-              plane.initOpacity(0);
-
-              that.planes.forEach((plane, index) => {
-                plane.initOpacity(index);
-              });
-            }
-
-            if (that.page === 'about') {
-              that.planes.forEach((plane, index) => {
-                plane.initOpacity(index);
-              });
-
-              that.about.showAbout();
-            }
-
-            that.header.start();
-            document.documentElement.classList.remove('loading');
-          },
+          // once(data) {
+          //   if (that.page === 'home') {
+          //     that.lenis.start();
+          //     that.planes.forEach((plane, index) => {
+          //       plane.initOpacity(index);
+          //     });
+          //   }
+          //   if (that.page === 'work') {
+          //     const plane =
+          //       that.planes[Number(data.next.container.dataset.index)];
+          //     const carouselDom = document.querySelector('.slider__carousel');
+          //     that.lenis.start();
+          //     that.lenis.scrollTo(
+          //       plane.bounds.left *
+          //         (that.lenis.dimensions.height /
+          //           (carouselDom.offsetWidth - that.width / 2)),
+          //       { immediate: true }
+          //     );
+          //     that.lenis.stop();
+          //     plane.initOpacity(0);
+          //     that.planes.forEach((plane, index) => {
+          //       plane.initOpacity(index);
+          //     });
+          //   }
+          //   if (that.page === 'about') {
+          //     that.planes.forEach((plane, index) => {
+          //       plane.initOpacity(index);
+          //     });
+          //     that.about.showAbout();
+          //   }
+          //   that.header.start();
+          //   document.documentElement.classList.remove('loading');
+          // },
         },
         {
           name: 'from-home-to-work',
