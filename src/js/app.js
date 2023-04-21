@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import '../css/index.scss';
 
 import Scene from './Scene';
+import { gsap } from 'gsap';
 
 const fontGraphik = new Promise((resolve) => {
   new FontFaceObserver('Graphik').load().then(() => {
@@ -43,7 +44,6 @@ const loadTextures = Promise.all(
 );
 
 Promise.all([fontGraphik, preloadImages, loadTextures]).then(() => {
-  console.log('loadded');
   new Scene(
     document.getElementById('webgl'),
     document.getElementById('page__wrapper'),

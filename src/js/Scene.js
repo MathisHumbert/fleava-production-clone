@@ -5,7 +5,6 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
-
 import barba from '@barba/core';
 
 import fragment from './shaders/composer-fragment.glsl';
@@ -17,6 +16,7 @@ import Header from './Header';
 import Works from './Works';
 import About from './About';
 import { checkMobileOrTablet } from './utils';
+import Transition from './Transition';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,17 +51,9 @@ export default class Scene {
     this.header = new Header(this.cursorDom);
     this.cursor = new Cursor(this.isMobileOrTablet);
 
-    if (this.page === 'work') {
-      this.works = new Works(this);
-    }
-
-    if (this.page === 'about') {
-      this.about = new About(this);
-    }
-
-    this.initBarbara();
     this.initPlanes();
     this.initComposerPass();
+    new Transition(this);
 
     this.addEvents();
     this.update();
@@ -100,11 +92,11 @@ export default class Scene {
       requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    lenis.scrollTo(0, {
+      duration: 0.5,
+    });
 
-    if (this.page === 'about' || this.page === 'work') {
-      lenis.stop();
-    }
+    requestAnimationFrame(raf);
 
     this.lenis = lenis;
 
@@ -163,208 +155,6 @@ export default class Scene {
     this.customPass.renderToScreen = true;
 
     this.composer.addPass(this.customPass);
-  }
-
-  initBarbara() {
-    let that = this;
-
-    barba.init({
-      preventRunning: true,
-      transitions: [
-        {
-          // once(data) {
-          //   if (that.page === 'home') {
-          //     that.lenis.start();
-          //     that.planes.forEach((plane, index) => {
-          //       plane.initOpacity(index);
-          //     });
-          //   }
-          //   if (that.page === 'work') {
-          //     const plane =
-          //       that.planes[Number(data.next.container.dataset.index)];
-          //     const carouselDom = document.querySelector('.slider__carousel');
-          //     that.lenis.start();
-          //     that.lenis.scrollTo(
-          //       plane.bounds.left *
-          //         (that.lenis.dimensions.height /
-          //           (carouselDom.offsetWidth - that.width / 2)),
-          //       { immediate: true }
-          //     );
-          //     that.lenis.stop();
-          //     plane.initOpacity(0);
-          //     that.planes.forEach((plane, index) => {
-          //       plane.initOpacity(index);
-          //     });
-          //   }
-          //   if (that.page === 'about') {
-          //     that.planes.forEach((plane, index) => {
-          //       plane.initOpacity(index);
-          //     });
-          //     that.about.showAbout();
-          //   }
-          //   that.header.start();
-          //   document.documentElement.classList.remove('loading');
-          // },
-        },
-        {
-          name: 'from-home-to-work',
-          from: {
-            namespace: ['home'],
-          },
-          to: {
-            namespace: ['work'],
-          },
-          leave(data) {
-            that.lenis.stop();
-
-            const planeIndex = Number(data.next.container.dataset.index);
-            that.page = 'work';
-
-            return that.planes[planeIndex].onZoom(
-              that.footerScrollDom,
-              that.headerToggleDom
-            );
-          },
-          enter() {
-            if (that.works) {
-              that.works.addEvents();
-            } else {
-              that.works = new Works(that);
-            }
-
-            document.querySelector('.footer__info').classList.add('active');
-          },
-        },
-        {
-          name: 'from-work-to-home',
-          from: {
-            namespace: ['work'],
-          },
-          to: {
-            namespace: ['home'],
-          },
-          leave(data) {
-            that.page = 'home';
-
-            document.querySelector('.cursor').classList.remove('close');
-
-            that.works.removeEvents();
-
-            const planeIndex = Number(data.current.container.dataset.index);
-            return that.planes[planeIndex].onUnZoom(
-              that.footerScrollDom,
-              that.headerToggleDom,
-              that.isMobileOrTablet
-            );
-          },
-          enter() {
-            if (that.isMobileOrTablet) {
-              document.documentElement.style.setProperty(
-                '--main-color',
-                '#ffffff'
-              );
-            }
-
-            that.lenis.start();
-          },
-        },
-        {
-          name: 'from-home-to-about',
-          from: {
-            namespace: ['home'],
-          },
-          to: {
-            namespace: ['about'],
-          },
-          leave() {
-            that.page = 'about';
-            document.documentElement.style.setProperty(
-              '--main-color',
-              '#e0ccbb'
-            );
-
-            that.lenis.stop();
-
-            const tl = gsap.timeline();
-
-            return tl
-              .add(() => {
-                that.footer.hideFooter();
-              })
-              .set(that.transitionPathDom, {
-                attr: { d: 'M 0 100 V 100 Q 50 100 100 100 V 100 z' },
-              })
-              .to(that.transitionPathDom, {
-                attr: { d: 'M 0 100 V 50 Q 50 0 100 50 V 100 z' },
-                duration: 0.8,
-                ease: 'power4.in',
-              })
-              .to(that.transitionPathDom, {
-                attr: { d: 'M 0 100 V 0 Q 50 0 100 0 V 100 z' },
-                duration: 0.3,
-                ease: 'power2',
-              })
-              .add(() => that.headerToggleDom.classList.add('active'));
-          },
-
-          enter() {
-            if (that.about) {
-              that.about.addEvents();
-              that.about.initDom();
-            } else {
-              that.about = new About(that);
-            }
-
-            return that.about.showAbout();
-          },
-        },
-        {
-          name: 'from-about-to-home',
-          from: {
-            namespace: ['about'],
-          },
-          to: {
-            namespace: ['home'],
-          },
-          leave() {
-            that.page = 'home';
-
-            that.about.removeEvents();
-
-            return that.about.hideAbout();
-          },
-
-          enter() {
-            that.lenis.start();
-            document.documentElement.style.setProperty(
-              '--main-color',
-              '#ffffff'
-            );
-
-            const tl = gsap.timeline();
-
-            return tl
-              .set(that.transitionPathDom, {
-                attr: { d: 'M 0 0 V 100 Q 50 100 100 100 V 0 z' },
-              })
-              .to(that.transitionPathDom, {
-                attr: { d: 'M 0 0 V 50 Q 50 0 100 50 V 0 z' },
-                duration: 0.3,
-                ease: 'power2.in',
-              })
-              .to(that.transitionPathDom, {
-                attr: { d: 'M 0 0 V 0 Q 50 0 100 0 V 0 z' },
-                duration: 0.8,
-                ease: 'power4',
-              })
-              .add(() => {
-                that.footer.showFooter();
-              }, 0.2)
-              .add(() => that.headerToggleDom.classList.remove('active'));
-          },
-        },
-      ],
-    });
   }
 
   addEvents() {

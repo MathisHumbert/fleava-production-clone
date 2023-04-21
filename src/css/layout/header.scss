@@ -136,11 +136,6 @@
   pointer-events: none;
 }
 
-.loading .about__link .line__inner {
-  transform: translateY(-110%);
-  transition: transform 0s;
-}
-
 .about__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
   transform: translateY(0);
@@ -149,6 +144,11 @@
 .header__toggle.active .about__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: translateY(-110%);
+}
+
+.loading .about__link .line__inner {
+  transform: translateY(-110%);
+  transition: transform 0s;
 }
 
 .close__link {
@@ -160,11 +160,6 @@
   pointer-events: auto;
 }
 
-.loading .header__toggle.active .close__link .line__inner {
-  transform: translateY(-110%);
-  transition: transform 0s;
-}
-
 .close__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
   transform: translateY(110%);
@@ -173,4 +168,9 @@
 .header__toggle.active .close__link .line__inner {
   transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
   transform: translateY(0);
+}
+
+.loading .header__toggle.active .close__link .line__inner {
+  transform: translateY(-110%);
+  transition: transform 0s;
 }

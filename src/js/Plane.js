@@ -47,7 +47,7 @@ export default class Plane {
         uProgress: { value: 0 },
         uHover: { value: this.isFullScreen ? 1 : 0 },
         uVelo: { value: 0 },
-        uOpacity: { value: 1 },
+        uOpacity: { value: 0 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,

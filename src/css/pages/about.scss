@@ -7,14 +7,14 @@
   justify-content: space-between;
 }
 
+.loading .about__wrapper .line__inner {
+  transform: translateY(110%);
+}
+
 @media screen and (min-width: 700px) {
   .about__wrapper {
     padding: 15vw 0 3vw;
   }
-}
-
-.about__wrapper .line__inner {
-  opacity: 0;
 }
 
 .about__info {
