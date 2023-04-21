@@ -15,7 +15,9 @@ export default class Plane {
     this.scene = scene.scene;
     this.width = scene.width;
     this.height = scene.height;
-    this.texture = scene.loader.loadedTextures[this.imgDom.getAttribute('src')];
+    // this.texture = scene.loader.loadedTextures[this.imgDom.getAttribute('src')];
+    this.texture = scene.textureLoader.load(this.imgDom.getAttribute('src'));
+    console.log(this.texture);
     this.footer = scene.footer;
     this.index = index;
     this.isFullScreen = isFullScreen;
@@ -47,7 +49,7 @@ export default class Plane {
         uProgress: { value: 0 },
         uHover: { value: this.isFullScreen ? 1 : 0 },
         uVelo: { value: 0 },
-        uOpacity: { value: 0 },
+        uOpacity: { value: 1 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
