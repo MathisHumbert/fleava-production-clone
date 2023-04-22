@@ -1,6 +1,10 @@
 import glsl from 'vite-plugin-glsl';
+import pugPlugin from 'vite-plugin-pug';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+
+const options = { pretty: true }; // FIXME: pug pretty is deprecated!
+const locals = { name: 'My Pug' };
 
 export default defineConfig({
   root: 'src',
@@ -26,5 +30,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [glsl()],
+  plugins: [glsl(), pugPlugin({ localImports: true })],
 });

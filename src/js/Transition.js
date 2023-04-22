@@ -39,14 +39,36 @@ export default class Transition {
 
             if (that.page === 'work') {
               that.lenis.stop();
+              const {
+                client,
+                director,
+                category,
+                location,
+                industry,
+                year,
+                index,
+              } = data.next.container.dataset;
 
-              const plane =
-                that.planes[Number(data.next.container.dataset.index)];
+              const plane = that.planes[Number(index)];
               const carouselDom = document.querySelector('.slider__carousel');
+
               const planePos =
                 plane.bounds.left *
                 (that.lenis.dimensions.height /
                   (carouselDom.offsetWidth - that.width / 2));
+
+              that.footer.showDetail(
+                null,
+                client,
+                director,
+                category,
+                location,
+                industry,
+                year,
+                index
+              );
+              document.querySelector('.footer__info').classList.add('active');
+              document.querySelector('.header__toggle').classList.add('active');
 
               return tl
                 .add(() => {

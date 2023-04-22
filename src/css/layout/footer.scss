@@ -97,9 +97,9 @@
   transform: translateY(-110%);
 }
 
-.footer__info.active .footer__info__base .line__inner {
-  transition: transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+.loading .footer__info.active .footer__info__base .line__inner {
   transform: translateY(-110%);
+  transition: transform 0s;
 }
 
 .footer__info__detail {

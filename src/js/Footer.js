@@ -24,7 +24,7 @@ export default class Footer {
     year,
     index
   ) {
-    document.documentElement.style.setProperty('--main-color', color);
+    color && document.documentElement.style.setProperty('--main-color', color);
 
     this.clientDom.textContent = client;
     this.directorDom.textContent = director;
@@ -34,7 +34,9 @@ export default class Footer {
     this.yearDom.textContent = year;
 
     this.footerInfoDomm.classList.add('active');
-    this.footerProgressDom.textContent = `0${index + 1}`;
+
+    console.log(index);
+    this.footerProgressDom.textContent = `0${Number(index) + 1}`;
   }
 
   hideDetail() {
