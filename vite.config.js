@@ -3,13 +3,11 @@ import pugPlugin from 'vite-plugin-pug';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
-const options = { pretty: true }; // FIXME: pug pretty is deprecated!
-const locals = { name: 'My Pug' };
-
 export default defineConfig({
   root: 'src',
   publicDir: '../public',
   build: {
+    base: 'https://fleava-production-clone.vercel.app/',
     outDir: '../dist',
     emptyOutDir: true,
     sourcemap: true,
