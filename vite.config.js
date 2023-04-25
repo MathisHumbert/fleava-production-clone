@@ -7,7 +7,6 @@ export default defineConfig({
   root: 'src',
   publicDir: '../public',
   build: {
-    base: 'https://fleava-production-clone.vercel.app/',
     outDir: '../dist',
     emptyOutDir: true,
     sourcemap: true,
