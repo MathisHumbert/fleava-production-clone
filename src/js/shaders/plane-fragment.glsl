@@ -41,9 +41,7 @@ void main(){
   vec4 texture = texture2D(uTexture, correctUv);
   vec3 color = texture.rgb;
 
-  float veloColor = min(abs(uVelo) / 75., 1.);
-
-  vec3 saturatedColor = adjustSaturation(color, -1. + min(uHover + veloColor, 1.));
+  vec3 saturatedColor = adjustSaturation(color, -1. + min(uHover + uVelo, 1.));
 
   gl_FragColor = vec4(saturatedColor, texture.a) * uOpacity;
 }

@@ -212,7 +212,9 @@ export default class Plane {
       }, 0.2);
   }
 
-  update() {
+  update(velocity) {
     this.setPostion();
+
+    this.material.uniforms.uVelo.value = velocity;
   }
 }

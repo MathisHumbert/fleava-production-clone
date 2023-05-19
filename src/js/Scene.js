@@ -205,10 +205,13 @@ export default class Scene {
       this.currentScroll = this.scroll;
     }
 
-    this.customPass.uniforms.uVelo.value = this.velocity;
+    this.customPass.uniforms.uVelo.value = Math.min(
+      Math.abs(this.velocity / 40),
+      1
+    );
 
     for (const plane of this.planes) {
-      plane.update();
+      plane.update(Math.min(Math.abs(this.velocity / 75), 1));
     }
 
     this.composer.render();
