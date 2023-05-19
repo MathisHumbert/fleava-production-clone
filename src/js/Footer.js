@@ -35,7 +35,6 @@ export default class Footer {
 
     this.footerInfoDomm.classList.add('active');
 
-    console.log(index);
     this.footerProgressDom.textContent = `0${Number(index) + 1}`;
   }
 
